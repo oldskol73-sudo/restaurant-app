@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "The Gilded Fork",
+    "slug": "restaurant-app",
+    "scheme": "restaurantapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#1C1C1E",
+    "splash": { "backgroundColor": "#1C1C1E" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.gildedfork" },
+    "android": {
+      "package": "com.example.gildedfork",
+      "adaptiveIcon": {
+        "backgroundColor": "#1C1C1E",
+        "foregroundImage": "./assets/android-icon-foreground.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": { "favicon": "./assets/favicon.png", "bundler": "metro" },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      ["expo-image-picker", { "photosPermission": "Choose photos of your dishes for the menu." }]
+    ]
+  }
+}
