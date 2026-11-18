@@ -117,7 +117,7 @@ export default function Menu() {
       <Screen bottomPad={cartCount ? 110 : 40}>
         <View style={{ paddingHorizontal: space.lg, paddingTop: space.md }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Pressable onPress={() => router.replace('/')} hitSlop={10} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Pressable onPress={() => router.replace('/kitchen')} hitSlop={10} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <Ionicons name="chevron-back" size={20} color={c.accent} />
               <Text style={{ fontFamily: fonts.sansMed, color: c.accent, fontSize: 14 }}>{settings.name}</Text>
             </Pressable>

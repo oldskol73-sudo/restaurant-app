@@ -11,6 +11,7 @@ import {
 import { cartTotals, findItem, rewardDiscount, toOrderLine, uid } from './pricing';
 import type {
   AppState,
+  BagLine,
   CartLine,
   NotifyChoice,
   Order,
@@ -114,6 +115,7 @@ const freshState = (): AppState => {
     settings,
     menu: defaultMenu.map((m) => ({ ...m, pairings: [...m.pairings], optionGroupIds: [...m.optionGroupIds] })),
     cart: [],
+    bag: [],
     orders: seedHistory(defaultMenu, settings.taxRatePercent),
     user: null,
     favorites: [],
@@ -139,6 +141,10 @@ type Store = {
   removeLine: (key: string) => void;
   updateLine: (key: string, patch: Partial<CartLine>) => void;
   clearCart: () => void;
+  // store bag
+  addToBag: (line: Omit<BagLine, 'key'>) => void;
+  updateBagQty: (key: string, qty: number) => void;
+  clearBag: () => void;
   // orders
   placeOrder: (input: PlaceOrderInput) => Order;
   setStatus: (orderId: string, status: OrderStatus) => void;
@@ -233,6 +239,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       updateLine: (key, patch) =>
         setState((s) => ({ ...s, cart: s.cart.map((l) => (l.key === key ? { ...l, ...patch } : l)) })),
       clearCart: () => setState((s) => ({ ...s, cart: [] })),
+      addToBag: (line) => setState((s) => ({ ...s, bag: [...(s.bag ?? []), { ...line, key: uid() }] })),
+      updateBagQty: (key, qty) =>
+        setState((s) => ({
+          ...s,
+          bag: (s.bag ?? []).flatMap((l) => (l.key !== key ? [l] : qty <= 0 ? [] : [{ ...l, qty }])),
+        })),
+      clearBag: () => setState((s) => ({ ...s, bag: [] })),
 
       placeOrder: (input) => {
         const s = state;

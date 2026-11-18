@@ -43,6 +43,10 @@ function Shell() {
         }}
       >
         <Stack.Screen name="index" options={{ animation: 'fade' }} />
+        <Stack.Screen name="kitchen" options={{ animation: 'fade' }} />
+        <Stack.Screen name="shop/[id]" />
+        <Stack.Screen name="product/[id]" />
+        <Stack.Screen name="bag" />
         <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
         <Stack.Screen name="(staff)" options={{ animation: 'fade' }} />
         <Stack.Screen name="meal/[id]" options={{ animation: 'slide_from_bottom', presentation: 'card' }} />

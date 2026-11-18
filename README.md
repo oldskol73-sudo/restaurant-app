@@ -34,6 +34,9 @@ To see it in a web browser instead: run `npx expo start --web`.
 4. In **Orders**: *Start preparing* → *Ready · notify customer*. Cash orders show a wine-red **UNPAID** bar. Use *Send a test order* to hear the new-order chime.
 5. Go back to the customer side — the alert banner and the "Ready for Pickup" step appear.
 
+## The front page (Store)
+The app opens on the **Store** front page, built from https://iuicdc.company.site/products. Everything on it is in **`store.config.ts`**: the six sections (DC School Store, DC Kitchen, Local School Events, Alms, Traveling Prophets Support, Fundraisers) and the products inside them. The **DC Kitchen** tile opens the restaurant ordering area. Graphics are the website's own images for now; replace the `image` addresses when new artwork is ready.
+
 ## Swapping in another restaurant
 Open **`restaurant.config.ts`** — it is the one settings file. Change the name, logo letters, address, hours, tax rate, rewards rules, colors and the whole menu (meal names, prices, photos, which sides/extras pair with each meal). Save, and the app reloads. Owners can also change most of it in the app: *Staff → Settings* and *Staff → Menu*.
 Tip: after changing the file, in the app go to *Staff → Settings → Reset to defaults* so the phone picks up the new file (the phone remembers earlier edits).

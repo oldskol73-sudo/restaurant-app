@@ -51,6 +51,8 @@ export type Order = {
   mine?: boolean;
 };
 
+export type BagLine = { key: string; productId: string; qty: number; fields: Record<string, string> };
+
 export type User = { id: string; name: string; phone: string; email: string };
 
 export type Settings = {
@@ -77,6 +79,7 @@ export type AppState = {
   settings: Settings;
   menu: MenuItem[];
   cart: CartLine[];
+  bag: BagLine[];
   orders: Order[];
   user: User | null;
   favorites: string[];

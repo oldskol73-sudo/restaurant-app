@@ -2,123 +2,132 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React from 'react';
-import { Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Banner, Body, Button, Eyebrow, FadeIn, FoodImage, GoldDivider, Heading, Logo } from '../components/ui';
-import { hoursLabel, isOpenNow, todayHours } from '../lib/hours';
+import { Pressable, Text, View } from 'react-native';
+import { featuredProductIds, storeCategories, storeInfo, storeProducts } from '../../store.config';
+import { Eyebrow, FadeIn, FoodImage, GoldDivider, Heading, Screen, Tag } from '../components/ui';
+import { tap } from '../lib/feedback';
+import { money } from '../lib/pricing';
 import { useStore } from '../lib/store';
-import { fonts, space, useColors } from '../theme';
+import { fonts, radius, shadow, space, useColors } from '../theme';
 
-export default function Welcome() {
+export default function StoreHome() {
   const c = useColors();
-  const insets = useSafeAreaInsets();
   const { state } = useStore();
-  const { settings, user, menu, orders } = state;
-  const open = isOpenNow(settings.hours);
-  const today = todayHours(settings.hours);
-  const hero = menu.find((m) => m.id === 'ribeye')?.photo ?? menu.find((m) => m.photo)?.photo;
-  const activeOrder = orders.find((o) => o.mine && o.status !== 'completed');
-
-  const openMaps = () => {
-    const q = encodeURIComponent(settings.address);
-    Linking.openURL(
-      Platform.OS === 'ios' ? `http://maps.apple.com/?q=${q}` : `https://www.google.com/maps/search/?api=1&query=${q}`,
-    ).catch(() => {});
-  };
+  const bagCount = (state.bag ?? []).reduce((s, l) => s + l.qty, 0);
+  const featured = storeProducts.filter((p) => featuredProductIds.includes(p.id));
 
   return (
-    <View style={{ flex: 1, backgroundColor: c.background }}>
-      <View style={StyleSheet.absoluteFill}>
-        <FoodImage uri={hero} radiusValue={0} showIcon={false} style={{ height: '58%' }} transition={900} />
-        <LinearGradient
-          colors={['rgba(28,28,30,0.35)', 'rgba(28,28,30,0.78)', c.background]}
-          locations={[0, 0.45, 0.62]}
-          style={StyleSheet.absoluteFill}
-        />
-      </View>
+    <View style={{ flex: 1 }}>
+      <Screen bottomPad={bagCount ? 110 : 40}>
+        <View style={{ paddingHorizontal: space.lg, paddingTop: space.md }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              <View style={{ width: 46, height: 46, borderRadius: 23, borderWidth: 1.5, borderColor: c.accent, backgroundColor: c.accentSoft, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 17, letterSpacing: 1 }}>DC</Text>
+              </View>
+              <View>
+                <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 20 }}>{storeInfo.name}</Text>
+                <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Shalom</Text>
+              </View>
+            </View>
+            <Pressable
+              onPress={() => {
+                tap();
+                router.push('/staff-login');
+              }}
+              hitSlop={10}
+              style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}
+            >
+              <Ionicons name="lock-closed-outline" size={13} color={c.muted} />
+              <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Staff</Text>
+            </Pressable>
+          </View>
 
-      <View style={{ flex: 1, paddingTop: insets.top + 24, paddingBottom: insets.bottom + 16, paddingHorizontal: space.lg }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <FadeIn>
-            <Logo size={112} />
-          </FadeIn>
-          <FadeIn delay={150} style={{ alignItems: 'center', marginTop: 22 }}>
-            <Heading size={40} style={{ textAlign: 'center' }}>
-              {settings.name}
+          <FadeIn style={{ marginTop: space.lg }}>
+            <Eyebrow>{storeInfo.tagline}</Eyebrow>
+            <Heading size={40} style={{ marginTop: 6 }}>
+              Welcome to the Store
             </Heading>
-            <Eyebrow style={{ marginTop: 10, textAlign: 'center' }}>{settings.tagline}</Eyebrow>
           </FadeIn>
-          <FadeIn delay={300} style={{ width: '70%', marginTop: 22 }}>
-            <GoldDivider diamond />
-          </FadeIn>
+          <GoldDivider diamond style={{ marginTop: space.md }} />
         </View>
 
-        <FadeIn delay={450} style={{ gap: 14, marginBottom: 22 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-            <View
-              style={{
-                width: 9,
-                height: 9,
-                borderRadius: 5,
-                backgroundColor: open && !settings.paused ? c.success : c.wine,
-              }}
-            />
-            <Text style={{ fontFamily: fonts.sansSemi, color: c.text, fontSize: 14 }}>
-              {settings.paused ? 'Online ordering paused' : open ? 'Open now' : 'Closed right now'}
-              <Text style={{ fontFamily: fonts.sans, color: c.muted }}>{`  ·  Today ${hoursLabel(today)}`}</Text>
-            </Text>
+        <View style={{ padding: space.lg, gap: 14 }}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 14 }}>
+            {storeCategories.map((cat, i) => (
+              <FadeIn key={cat.id} delay={i * 70} style={{ width: '48%' }}>
+                <Pressable
+                  onPress={() => {
+                    tap();
+                    router.push(cat.kind === 'kitchen' ? '/kitchen' : `/shop/${cat.id}`);
+                  }}
+                  style={[{ borderRadius: radius.lg, overflow: 'hidden', backgroundColor: c.surface, borderWidth: 1, borderColor: c.line }, shadow]}
+                >
+                  <FoodImage uri={cat.image} style={{ height: 150 }} radiusValue={0} icon={cat.kind === 'kitchen' ? 'restaurant-outline' : 'bag-handle-outline'} />
+                  <LinearGradient colors={['transparent', 'rgba(0,0,0,0.7)']} style={{ position: 'absolute', left: 0, right: 0, top: 70, height: 80 }} />
+                  {cat.kind === 'kitchen' ? (
+                    <View style={{ position: 'absolute', top: 10, left: 10 }}>
+                      <Tag label="Order pickup" tone="gold" />
+                    </View>
+                  ) : null}
+                  <View style={{ padding: 12, minHeight: 64, justifyContent: 'center' }}>
+                    <Text style={{ fontFamily: fonts.serifSemi, color: c.text, fontSize: 15.5, lineHeight: 20 }} numberOfLines={3}>
+                      {cat.title}
+                    </Text>
+                  </View>
+                </Pressable>
+              </FadeIn>
+            ))}
           </View>
-          <Pressable onPress={openMaps} style={{ flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' }}>
-            <Ionicons name="location-outline" size={16} color={c.accent} />
-            <Body muted size={13.5} style={{ textAlign: 'center' }}>
-              {settings.address}
-            </Body>
-          </Pressable>
-          <Body muted size={12} style={{ textAlign: 'center', letterSpacing: 1.2, textTransform: 'uppercase' }}>
-            Pickup only · Pay with PayPal or cash at the counter
-          </Body>
-        </FadeIn>
 
-        {settings.paused ? (
-          <FadeIn delay={500} style={{ marginBottom: 14 }}>
-            <Banner icon="pause-circle-outline" text="The kitchen is catching up. You can browse the menu, but new orders are paused for now." />
-          </FadeIn>
-        ) : null}
-
-        <FadeIn delay={600} style={{ gap: 12 }}>
-          {activeOrder ? (
-            <Button
-              title={`Track order #${activeOrder.number}`}
-              icon="receipt-outline"
-              variant="wine"
-              onPress={() => router.push(`/order/${activeOrder.id}`)}
-            />
+          {featured.length ? (
+            <View style={{ marginTop: space.md, gap: 14 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <Heading size={26}>Featured Products</Heading>
+                <View style={{ flex: 1, height: 1, backgroundColor: c.line }} />
+              </View>
+              {featured.map((p) => (
+                <Pressable
+                  key={p.id}
+                  onPress={() => {
+                    tap();
+                    router.push(`/product/${p.id}`);
+                  }}
+                  style={[{ borderRadius: radius.lg, backgroundColor: c.surface, overflow: 'hidden' }, shadow]}
+                >
+                  <FoodImage uri={p.image} style={{ height: 210 }} radiusValue={0} icon="ticket-outline" />
+                  <View style={{ padding: space.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                    <Heading size={21} style={{ flex: 1 }}>
+                      {p.title}
+                    </Heading>
+                    {p.price != null ? <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 21 }}>{money(p.price)}</Text> : null}
+                  </View>
+                </Pressable>
+              ))}
+            </View>
           ) : null}
-          <Button title="Start Order" icon="restaurant-outline" onPress={() => router.push('/menu')} />
-          {user ? (
-            <Button title={`Hi, ${user.name.split(' ')[0]} — My Account`} variant="outline" onPress={() => router.push('/account')} />
-          ) : (
-            <Button title="Sign In" variant="outline" onPress={() => router.push('/signin')} />
-          )}
+        </View>
+      </Screen>
+
+      {bagCount > 0 ? (
+        <FadeIn style={{ position: 'absolute', left: space.lg, right: space.lg, bottom: 16 }}>
           <Pressable
-            onPress={() => router.push('/menu')}
-            style={{ alignItems: 'center', paddingVertical: 4 }}
-            hitSlop={8}
+            onPress={() => {
+              tap();
+              router.push('/bag');
+            }}
+            style={[{ backgroundColor: c.accent, borderRadius: radius.md, paddingVertical: 15, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, shadow]}
           >
-            <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 13 }}>
-              No account needed — <Text style={{ color: c.accent, fontFamily: fonts.sansMed }}>continue as guest</Text>
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <View style={{ backgroundColor: '#1C1C1E', width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: c.accent, fontFamily: fonts.sansSemi, fontSize: 12 }}>{bagCount}</Text>
+              </View>
+              <Text style={{ fontFamily: fonts.sansSemi, color: '#1C1C1E', fontSize: 14, letterSpacing: 0.8, textTransform: 'uppercase' }}>View shopping bag</Text>
+            </View>
+            <Ionicons name="arrow-forward" size={20} color="#1C1C1E" />
           </Pressable>
         </FadeIn>
-
-        <Pressable
-          onPress={() => router.push('/staff-login')}
-          style={{ alignSelf: 'center', marginTop: 12, flexDirection: 'row', gap: 6, alignItems: 'center', padding: 6 }}
-        >
-          <Ionicons name="lock-closed-outline" size={12} color={c.muted} />
-          <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Restaurant staff</Text>
-        </Pressable>
-      </View>
+      ) : null}
     </View>
   );
 }
