@@ -45,6 +45,10 @@ export type DayHours = { day: string; open: string; close: string; closed?: bool
 export const restaurant = {
   name: 'Sweet Savor Cafe',
   tagline: 'Pickup Kitchen',
+  /** Big headline on the kitchen's front screen (white line, then orange line). */
+  heroLine1: 'Fresh. Hot.',
+  heroLine2: 'Ready for Pickup',
+  heroSub: 'Order ahead, skip the line, and pay with PayPal or cash at the counter.',
   /** Two letters shown inside the gold logo ring. */
   monogram: 'SS',
   /** Optional: paste a web address of your logo image. Leave '' to use the monogram. */
@@ -72,14 +76,15 @@ export const restaurant = {
 // 2. COLORS  (Modern Upscale palette)
 // ---------------------------------------------------------------------------
 export const palette = {
-  background: '#1C1C1E',
-  surface: '#26262A',
-  surfaceHigh: '#2F2F34',
-  accent: '#C9A227', // warm gold
-  text: '#F5F0E6', // soft cream
-  muted: '#8E8E93', // muted gray
-  wine: '#7A1F2B', // deep wine red — sale tags & highlights
+  background: '#0A0A0A', // near-black
+  surface: '#151515',
+  surfaceHigh: '#232323',
+  accent: '#FF9F1C', // bright orange
+  text: '#FFF6EA', // warm white
+  muted: '#A39C93', // warm gray
+  wine: '#C2362B', // brick red — sale tags & unpaid highlights
   success: '#5FA777',
+  cream: '#FFE9D2', // soft peach used for light panels
 };
 
 // ---------------------------------------------------------------------------

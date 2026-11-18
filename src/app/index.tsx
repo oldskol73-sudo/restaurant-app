@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { featuredProductIds, storeCategories, storeInfo, storeProducts } from '../../store.config';
-import { Eyebrow, FadeIn, FoodImage, GoldDivider, Heading, Screen, Tag } from '../components/ui';
+import { Body, FadeIn, FoodImage, Heading, NavPill, PlateHero, Screen, StatBar } from '../components/ui';
 import { tap } from '../lib/feedback';
 import { money } from '../lib/pricing';
 import { useStore } from '../lib/store';
@@ -16,43 +16,48 @@ export default function StoreHome() {
   const bagCount = (state.bag ?? []).reduce((s, l) => s + l.qty, 0);
   const featured = storeProducts.filter((p) => featuredProductIds.includes(p.id));
 
+  const heroImg = featured[0]?.image ?? storeCategories[0].image;
   return (
     <View style={{ flex: 1 }}>
+      <LinearGradient colors={['rgba(255,120,20,0.26)', 'transparent']} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 520 }} pointerEvents="none" />
       <Screen bottomPad={bagCount ? 110 : 40}>
         <View style={{ paddingHorizontal: space.lg, paddingTop: space.md }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-              <View style={{ width: 46, height: 46, borderRadius: 23, borderWidth: 1.5, borderColor: c.accent, backgroundColor: c.accentSoft, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 17, letterSpacing: 1 }}>DC</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <View style={{ width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, borderColor: c.accent, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 15, letterSpacing: 1 }}>DC</Text>
               </View>
               <View>
-                <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 20 }}>{storeInfo.name}</Text>
-                <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Shalom</Text>
+                <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 18 }}>{storeInfo.name}</Text>
+                <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 10.5 }}>Shalom</Text>
               </View>
             </View>
-            <Pressable
-              onPress={() => {
-                tap();
-                router.push('/staff-login');
-              }}
-              hitSlop={10}
-              style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}
-            >
-              <Ionicons name="lock-closed-outline" size={13} color={c.muted} />
-              <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Staff</Text>
-            </Pressable>
+            <View style={{ flexDirection: 'row', gap: 6 }}>
+              <NavPill label="Kitchen" icon="restaurant-outline" onPress={() => router.push('/kitchen')} />
+              <NavPill label="Staff" icon="lock-closed-outline" onPress={() => router.push('/staff-login')} />
+            </View>
           </View>
 
-          <FadeIn style={{ marginTop: space.lg }}>
-            <Eyebrow>{storeInfo.tagline}</Eyebrow>
-            <Heading size={40} style={{ marginTop: 6 }}>
-              Welcome to the Store
-            </Heading>
+          <FadeIn style={{ marginTop: 30 }}>
+            <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 50, lineHeight: 56 }}>Welcome to</Text>
+            <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 50, lineHeight: 56 }}>the Store</Text>
+            <Body style={{ marginTop: 12, maxWidth: 300 }}>{storeInfo.tagline}</Body>
+            <View style={{ height: 2, width: 190, backgroundColor: c.text, marginTop: 14 }} />
           </FadeIn>
-          <GoldDivider diamond style={{ marginTop: space.md }} />
+
+          <FadeIn delay={200} style={{ alignItems: 'center', marginTop: 26 }}>
+            <PlateHero uri={heroImg} size={250} icon="ticket-outline" />
+          </FadeIn>
+          <View style={{ marginTop: 26 }}>
+            <StatBar items={[{ label: 'Sections', value: String(storeCategories.length) }, { label: 'Kitchen', value: 'Pickup' }, { label: 'Pay', value: 'PayPal' }]} />
+          </View>
         </View>
 
         <View style={{ padding: space.lg, gap: 14 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 6 }}>
+            <Heading size={28}>Shop by section</Heading>
+            <View style={{ flex: 1, height: 1, backgroundColor: c.line }} />
+          </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 14 }}>
             {storeCategories.map((cat, i) => (
               <FadeIn key={cat.id} delay={i * 70} style={{ width: '48%' }}>
@@ -61,19 +66,16 @@ export default function StoreHome() {
                     tap();
                     router.push(cat.kind === 'kitchen' ? '/kitchen' : `/shop/${cat.id}`);
                   }}
-                  style={[{ borderRadius: radius.lg, overflow: 'hidden', backgroundColor: c.surface, borderWidth: 1, borderColor: c.line }, shadow]}
+                  style={{ borderRadius: radius.lg, backgroundColor: c.surface, borderWidth: 1.5, borderColor: c.line, padding: 12, alignItems: 'center', gap: 10, minHeight: 200 }}
                 >
-                  <FoodImage uri={cat.image} style={{ height: 150 }} radiusValue={0} icon={cat.kind === 'kitchen' ? 'restaurant-outline' : 'bag-handle-outline'} />
-                  <LinearGradient colors={['transparent', 'rgba(0,0,0,0.7)']} style={{ position: 'absolute', left: 0, right: 0, top: 70, height: 80 }} />
-                  {cat.kind === 'kitchen' ? (
-                    <View style={{ position: 'absolute', top: 10, left: 10 }}>
-                      <Tag label="Order pickup" tone="gold" />
-                    </View>
-                  ) : null}
-                  <View style={{ padding: 12, minHeight: 64, justifyContent: 'center' }}>
-                    <Text style={{ fontFamily: fonts.serifSemi, color: c.text, fontSize: 15.5, lineHeight: 20 }} numberOfLines={3}>
-                      {cat.title}
-                    </Text>
+                  <View style={{ width: 104, height: 104, borderRadius: 52, borderWidth: 3, borderColor: c.accent, padding: 3 }}>
+                    <FoodImage uri={cat.image} style={{ flex: 1 }} radiusValue={50} icon={cat.kind === 'kitchen' ? 'restaurant-outline' : 'bag-handle-outline'} />
+                  </View>
+                  <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 16, textAlign: 'center', lineHeight: 20 }} numberOfLines={3}>
+                    {cat.title}
+                  </Text>
+                  <View style={{ backgroundColor: c.accent, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 6, marginTop: 'auto' }}>
+                    <Text style={{ fontFamily: fonts.sansSemi, fontSize: 11.5, color: '#0A0A0A' }}>{cat.kind === 'kitchen' ? 'Order now' : 'Explore'}</Text>
                   </View>
                 </Pressable>
               </FadeIn>
@@ -83,7 +85,7 @@ export default function StoreHome() {
           {featured.length ? (
             <View style={{ marginTop: space.md, gap: 14 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                <Heading size={26}>Featured Products</Heading>
+                <Heading size={28}>Featured</Heading>
                 <View style={{ flex: 1, height: 1, backgroundColor: c.line }} />
               </View>
               {featured.map((p) => (
@@ -93,14 +95,17 @@ export default function StoreHome() {
                     tap();
                     router.push(`/product/${p.id}`);
                   }}
-                  style={[{ borderRadius: radius.lg, backgroundColor: c.surface, overflow: 'hidden' }, shadow]}
+                  style={{ borderRadius: radius.lg, backgroundColor: c.surface, borderWidth: 1.5, borderColor: c.line, padding: 12, flexDirection: 'row', gap: 14, alignItems: 'center' }}
                 >
-                  <FoodImage uri={p.image} style={{ height: 210 }} radiusValue={0} icon="ticket-outline" />
-                  <View style={{ padding: space.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                    <Heading size={21} style={{ flex: 1 }}>
-                      {p.title}
-                    </Heading>
-                    {p.price != null ? <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 21 }}>{money(p.price)}</Text> : null}
+                  <View style={{ width: 96, height: 96, borderRadius: 48, borderWidth: 3, borderColor: c.accent, padding: 3 }}>
+                    <FoodImage uri={p.image} style={{ flex: 1 }} radiusValue={44} icon="ticket-outline" />
+                  </View>
+                  <View style={{ flex: 1, gap: 6 }}>
+                    <Heading size={20}>{p.title}</Heading>
+                    {p.price != null ? <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 20 }}>{money(p.price)}</Text> : null}
+                    <View style={{ backgroundColor: c.accent, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 6, alignSelf: 'flex-start' }}>
+                      <Text style={{ fontFamily: fonts.sansSemi, fontSize: 11.5, color: '#0A0A0A' }}>Buy now</Text>
+                    </View>
                   </View>
                 </Pressable>
               ))}
@@ -119,12 +124,12 @@ export default function StoreHome() {
             style={[{ backgroundColor: c.accent, borderRadius: radius.md, paddingVertical: 15, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, shadow]}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <View style={{ backgroundColor: '#1C1C1E', width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ backgroundColor: '#0A0A0A', width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: c.accent, fontFamily: fonts.sansSemi, fontSize: 12 }}>{bagCount}</Text>
               </View>
-              <Text style={{ fontFamily: fonts.sansSemi, color: '#1C1C1E', fontSize: 14, letterSpacing: 0.8, textTransform: 'uppercase' }}>View shopping bag</Text>
+              <Text style={{ fontFamily: fonts.sansSemi, color: '#0A0A0A', fontSize: 14, letterSpacing: 0.8, textTransform: 'uppercase' }}>View shopping bag</Text>
             </View>
-            <Ionicons name="arrow-forward" size={20} color="#1C1C1E" />
+            <Ionicons name="arrow-forward" size={20} color="#0A0A0A" />
           </Pressable>
         </FadeIn>
       ) : null}

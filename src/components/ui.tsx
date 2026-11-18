@@ -76,7 +76,7 @@ export function Heading({
   return (
     <Text
       numberOfLines={numberOfLines}
-      style={[{ fontFamily: fonts.serif, fontSize: size, color: c.text, lineHeight: size * 1.22 }, style]}
+      style={[{ fontFamily: fonts.serif, fontSize: size, color: c.text, lineHeight: size * 1.18, letterSpacing: 0.4 }, style]}
     >
       {children}
     </Text>
@@ -159,7 +159,7 @@ export function Button({
   const c = useColors();
   const scale = useRef(new Animated.Value(1)).current;
   const bg = variant === 'gold' ? c.accent : variant === 'wine' ? c.wine : 'transparent';
-  const fg = variant === 'gold' ? '#1C1C1E' : variant === 'wine' ? c.text : variant === 'outline' ? c.accent : c.text;
+  const fg = variant === 'gold' ? '#0A0A0A' : variant === 'wine' ? c.text : variant === 'outline' ? c.accent : c.text;
   const border = variant === 'outline' ? c.accent : 'transparent';
   return (
     <Animated.View style={[{ transform: [{ scale }], opacity: disabled ? 0.45 : 1 }, style]}>
@@ -177,7 +177,7 @@ export function Button({
           borderWidth: variant === 'outline' ? 1.5 : 0,
           paddingVertical: small ? 10 : 16,
           paddingHorizontal: small ? 16 : 24,
-          borderRadius: radius.md,
+          borderRadius: 999,
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
@@ -240,7 +240,7 @@ export function IconButton({
         style,
       ]}
     >
-      <Ionicons name={icon} size={size * 0.5} color={filled ? '#1C1C1E' : c.text} />
+      <Ionicons name={icon} size={size * 0.5} color={filled ? '#0A0A0A' : c.text} />
       {badge ? (
         <View
           style={{
@@ -298,8 +298,8 @@ export function Chip({
         style,
       ]}
     >
-      {icon ? <Ionicons name={icon} size={14} color={active ? '#1C1C1E' : c.accent} /> : null}
-      <Text style={{ fontFamily: fonts.sansMed, fontSize: 13, color: active ? '#1C1C1E' : c.text }}>{label}</Text>
+      {icon ? <Ionicons name={icon} size={14} color={active ? '#0A0A0A' : c.accent} /> : null}
+      <Text style={{ fontFamily: fonts.sansMed, fontSize: 13, color: active ? '#0A0A0A' : c.text }}>{label}</Text>
     </Pressable>
   );
 }
@@ -307,7 +307,7 @@ export function Chip({
 export function Tag({ label, tone = 'wine', style }: { label: string; tone?: 'wine' | 'gold' | 'muted' | 'green'; style?: StyleProp<ViewStyle> }) {
   const c = useColors();
   const bg = tone === 'wine' ? c.wine : tone === 'gold' ? c.accent : tone === 'green' ? c.success : 'rgba(255,255,255,0.12)';
-  const fg = tone === 'gold' ? '#1C1C1E' : tone === 'green' ? '#10150f' : c.text;
+  const fg = tone === 'gold' ? '#0A0A0A' : tone === 'green' ? '#10150f' : c.text;
   return (
     <View style={[{ backgroundColor: bg, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, alignSelf: 'flex-start' }, style]}>
       <Text style={{ color: fg, fontFamily: fonts.sansSemi, fontSize: 10.5, letterSpacing: 1.1, textTransform: 'uppercase' }}>
@@ -493,7 +493,7 @@ export function Card({ children, style, onPress }: { children: React.ReactNode; 
   const base: ViewStyle = {
     backgroundColor: c.surface,
     borderRadius: radius.lg,
-    borderWidth: StyleSheet.hairlineWidth * 2,
+    borderWidth: 1.5,
     borderColor: c.line,
     padding: space.md,
   };
@@ -648,3 +648,84 @@ export function useStyles<T>(factory: (c: ReturnType<typeof useColors>) => T): T
 }
 
 export { shadow };
+
+/* ------------------------- Reference-style pieces ------------------------- */
+
+/** Round plate photo with an orange ring and warm glow, like the hero in the design. */
+export function PlateHero({ uri, size = 250, icon = 'restaurant-outline' }: { uri?: string; size?: number; icon?: IconName }) {
+  const c = useColors();
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 5,
+        borderColor: c.accent,
+        padding: 6,
+        backgroundColor: c.background,
+        shadowColor: c.accent,
+        shadowOpacity: 0.55,
+        shadowRadius: 34,
+        shadowOffset: { width: 0, height: 0 },
+        elevation: 14,
+      }}
+    >
+      <FoodImage uri={uri} icon={icon} radiusValue={size / 2} style={{ flex: 1 }} transition={700} />
+    </View>
+  );
+}
+
+/** Orange stats strip with big numbers (rounded bottom), as in the design. */
+export function StatBar({ items }: { items: { value: string; label: string }[] }) {
+  const c = useColors();
+  return (
+    <View
+      style={{
+        backgroundColor: c.accent,
+        borderRadius: 26,
+        paddingVertical: 14,
+        paddingHorizontal: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+      }}
+    >
+      {items.map((it) => (
+        <View key={it.label} style={{ alignItems: 'center', flex: 1, paddingHorizontal: 2 }}>
+          <Text style={{ fontFamily: fonts.sansSemi, color: '#0A0A0A', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' }}>{it.label}</Text>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={{ fontFamily: fonts.serif, color: '#FFFFFF', fontSize: 22, marginTop: 2 }}>
+            {it.value}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Small outlined "nav" pill (Home / Sign in …) like the top bar in the design. */
+export function NavPill({ label, onPress, filled, icon }: { label: string; onPress: () => void; filled?: boolean; icon?: IconName }) {
+  const c = useColors();
+  return (
+    <Pressable
+      onPress={() => {
+        tap();
+        onPress();
+      }}
+      hitSlop={6}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        paddingHorizontal: 14,
+        paddingVertical: 7,
+        borderRadius: 999,
+        borderWidth: 1.2,
+        borderColor: filled ? c.accent : c.text,
+        backgroundColor: filled ? c.accent : 'transparent',
+      }}
+    >
+      {icon ? <Ionicons name={icon} size={13} color={filled ? '#0A0A0A' : c.text} /> : null}
+      <Text style={{ fontFamily: fonts.sansMed, fontSize: 12, color: filled ? '#0A0A0A' : c.text }}>{label}</Text>
+    </Pressable>
+  );
+}

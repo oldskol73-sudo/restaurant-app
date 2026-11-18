@@ -97,7 +97,7 @@ export default function ProductScreen() {
         </View>
       </ScrollView>
 
-      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: space.lg, paddingTop: 14, paddingBottom: insets.bottom + 14, backgroundColor: '#18181A', borderTopWidth: 1, borderTopColor: c.line, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+      <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: space.lg, paddingTop: 14, paddingBottom: insets.bottom + 14, backgroundColor: '#0A0A0A', borderTopWidth: 1, borderTopColor: c.line, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
         <Stepper value={qty} min={1} max={product.stock ?? 20} onChange={(n) => setQty(Math.max(1, n))} />
         <View style={{ flex: 1 }}>
           {added ? <Button title="View bag" icon="bag-handle-outline" onPress={() => router.push('/bag')} /> : <Button title={product.price != null ? `Add to Bag · ${money(product.price * qty)}` : 'Add to Bag'} onPress={add} />}

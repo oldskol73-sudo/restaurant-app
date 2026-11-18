@@ -36,7 +36,7 @@ export function ReadyAlert() {
         style={[{ backgroundColor: c.surfaceHigh, borderRadius: 18, borderWidth: 1, borderColor: c.accent, padding: 14, flexDirection: 'row', gap: 12, alignItems: 'center' }, shadow]}
       >
         <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: c.accent, alignItems: 'center', justifyContent: 'center' }}>
-          <Ionicons name="bag-check" size={22} color="#1C1C1E" />
+          <Ionicons name="bag-check" size={22} color="#0A0A0A" />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={{ fontFamily: fonts.sansSemi, color: c.text, fontSize: 14.5 }}>Order #{order.number} is ready!</Text>

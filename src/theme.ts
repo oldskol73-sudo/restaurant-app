@@ -3,8 +3,8 @@ import { palette } from '../restaurant.config';
 import { useStore } from './lib/store';
 
 export const fonts = {
-  serif: 'PlayfairDisplay_700Bold',
-  serifSemi: 'PlayfairDisplay_600SemiBold',
+  serif: 'Anton_400Regular',
+  serifSemi: 'Anton_400Regular',
   sans: 'Inter_400Regular',
   sansMed: 'Inter_500Medium',
   sansSemi: 'Inter_600SemiBold',
@@ -23,7 +23,7 @@ export function buildColors(accent: string, wine: string): Colors {
     ...palette,
     accent,
     wine,
-    line: alpha(accent, 0.35),
+    line: alpha(accent, 0.45),
     accentSoft: alpha(accent, 0.14),
     wineSoft: alpha(wine, 0.35),
     overlay: 'rgba(0,0,0,0.55)',
@@ -37,7 +37,7 @@ export function useColors(): Colors {
   return useMemo(() => buildColors(settings.accent, settings.wine), [settings.accent, settings.wine]);
 }
 
-export const radius = { sm: 10, md: 16, lg: 22, xl: 28 };
+export const radius = { sm: 12, md: 18, lg: 24, xl: 30 };
 export const space = { xs: 6, sm: 10, md: 16, lg: 24, xl: 32 };
 
 export const shadow = {

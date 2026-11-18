@@ -157,7 +157,7 @@ export default function Cart() {
                                       backgroundColor: on ? c.accent : 'transparent',
                                     }}
                                   >
-                                    <Text style={{ fontFamily: fonts.sansMed, fontSize: 12.5, color: on ? '#1C1C1E' : c.text }}>
+                                    <Text style={{ fontFamily: fonts.sansMed, fontSize: 12.5, color: on ? '#0A0A0A' : c.text }}>
                                       {p.name} +{money(p.price)}
                                     </Text>
                                   </Pressable>
@@ -198,7 +198,7 @@ export default function Cart() {
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={{ fontFamily: fonts.sansMed, color: c.accent, fontSize: 13 }}>{money(m.price)}</Text>
                         <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: c.accent, alignItems: 'center', justifyContent: 'center' }}>
-                          <Ionicons name="add" size={17} color="#1C1C1E" />
+                          <Ionicons name="add" size={17} color="#0A0A0A" />
                         </View>
                       </View>
                     </View>

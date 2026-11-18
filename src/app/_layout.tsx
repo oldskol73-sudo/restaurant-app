@@ -1,5 +1,6 @@
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
-import { PlayfairDisplay_600SemiBold, PlayfairDisplay_700Bold, useFonts } from '@expo-google-fonts/playfair-display';
+import { Anton_400Regular } from '@expo-google-fonts/anton';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -18,8 +19,7 @@ function Shell() {
     state: { hydrated },
   } = useStore();
   const [fontsLoaded] = useFonts({
-    PlayfairDisplay_600SemiBold,
-    PlayfairDisplay_700Bold,
+    Anton_400Regular,
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,

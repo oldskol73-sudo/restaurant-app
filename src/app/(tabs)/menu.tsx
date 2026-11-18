@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -15,76 +14,52 @@ export function MenuCard({ item, index = 0 }: { item: MenuItem; index?: number }
   const { state, toggleFavorite } = useStore();
   const fav = state.favorites.includes(item.id);
   return (
-    <FadeIn delay={Math.min(index, 6) * 70} style={{ marginBottom: 26 }}>
+    <FadeIn delay={Math.min(index, 6) * 70} style={{ marginBottom: 16 }}>
       <Pressable
         onPress={() => {
           tap();
           router.push(`/meal/${item.id}`);
         }}
-        style={[{ borderRadius: radius.lg, backgroundColor: c.surface }, shadow]}
+        style={{ borderRadius: radius.lg, backgroundColor: c.surface, borderWidth: 1.5, borderColor: c.line, padding: 12, flexDirection: 'row', gap: 14, alignItems: 'center', opacity: item.soldOut ? 0.6 : 1 }}
       >
-        <View>
-          <FoodImage uri={item.photo} style={{ height: 210 }} radiusValue={radius.lg} />
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.55)']}
-            style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 90, borderBottomLeftRadius: radius.lg, borderBottomRightRadius: radius.lg }}
-          />
-          <View style={{ position: 'absolute', top: 12, left: 12, gap: 6 }}>
+        <View style={{ width: 104, height: 104, borderRadius: 52, borderWidth: 3, borderColor: c.accent, padding: 3 }}>
+          <FoodImage uri={item.photo} style={{ flex: 1 }} radiusValue={50} />
+        </View>
+        <View style={{ flex: 1, gap: 4 }}>
+          <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
             {item.saleLabel ? <Tag label={item.saleLabel} tone="wine" /> : null}
             {item.badge ? <Tag label={item.badge} tone="gold" /> : null}
           </View>
-          <Pressable
-            hitSlop={10}
-            onPress={() => {
-              select();
-              toggleFavorite(item.id);
-            }}
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              width: 38,
-              height: 38,
-              borderRadius: 19,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Ionicons name={fav ? 'heart' : 'heart-outline'} size={20} color={fav ? c.accent : c.text} />
-          </Pressable>
-          {item.soldOut ? (
-            <View
-              style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0, bottom: 0,
-                backgroundColor: 'rgba(28,28,30,0.72)',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: radius.lg,
-              }}
-            >
-              <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 22, letterSpacing: 1 }}>Sold Out</Text>
-            </View>
-          ) : null}
-        </View>
-        <View style={{ padding: space.md, gap: 6 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-            <Heading size={21} style={{ flex: 1 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8 }}>
+            <Heading size={19} style={{ flex: 1 }} numberOfLines={2}>
               {item.name}
             </Heading>
-            <View style={{ alignItems: 'flex-end' }}>
-              <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 20 }}>{money(item.price)}</Text>
-              {item.wasPrice ? (
-                <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12, textDecorationLine: 'line-through' }}>
-                  {money(item.wasPrice)}
-                </Text>
-              ) : null}
-            </View>
+            <Pressable
+              hitSlop={10}
+              onPress={() => {
+                select();
+                toggleFavorite(item.id);
+              }}
+            >
+              <Ionicons name={fav ? 'heart' : 'heart-outline'} size={20} color={fav ? c.accent : c.muted} />
+            </Pressable>
           </View>
-          <Body muted size={14} numberOfLines={2}>
+          <Body muted size={12.5} numberOfLines={2}>
             {item.description}
           </Body>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+            <View>
+              <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 19 }}>{money(item.price)}</Text>
+              {item.wasPrice ? (
+                <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 11, textDecorationLine: 'line-through' }}>{money(item.wasPrice)}</Text>
+              ) : null}
+            </View>
+            <View style={{ backgroundColor: item.soldOut ? c.surfaceHigh : c.accent, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 7 }}>
+              <Text style={{ fontFamily: fonts.sansSemi, fontSize: 11.5, color: item.soldOut ? c.muted : '#0A0A0A', letterSpacing: 0.5 }}>
+                {item.soldOut ? 'Sold out' : 'Order now'}
+              </Text>
+            </View>
+          </View>
         </View>
       </Pressable>
     </FadeIn>
@@ -124,7 +99,7 @@ export default function Menu() {
           </View>
           <Eyebrow style={{ marginTop: space.md }}>Pickup menu</Eyebrow>
           <Heading size={36} style={{ marginTop: 6 }}>
-            Tonight’s Menu
+            Explore Our Menu
           </Heading>
           <GoldDivider diamond style={{ marginTop: space.md }} />
 
@@ -221,14 +196,14 @@ export default function Menu() {
             ]}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <View style={{ backgroundColor: '#1C1C1E', width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ backgroundColor: '#0A0A0A', width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: c.accent, fontFamily: fonts.sansSemi, fontSize: 12 }}>{cartCount}</Text>
               </View>
-              <Text style={{ fontFamily: fonts.sansSemi, color: '#1C1C1E', fontSize: 14, letterSpacing: 0.8, textTransform: 'uppercase' }}>
+              <Text style={{ fontFamily: fonts.sansSemi, color: '#0A0A0A', fontSize: 14, letterSpacing: 0.8, textTransform: 'uppercase' }}>
                 View your order
               </Text>
             </View>
-            <Ionicons name="arrow-forward" size={20} color="#1C1C1E" />
+            <Ionicons name="arrow-forward" size={20} color="#0A0A0A" />
           </Pressable>
         </FadeIn>
       ) : null}

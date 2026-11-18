@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type MenuItem } from '../../../restaurant.config';
-import { Banner, Body, Button, EmptyState, Eyebrow, FadeIn, Field, FoodImage, GoldDivider, Heading, IconButton, Stepper, Tag } from '../../components/ui';
+import { Banner, Body, Button, EmptyState, Eyebrow, FadeIn, Field, FoodImage, GoldDivider, Heading, IconButton, PlateHero, Stepper, Tag } from '../../components/ui';
 import { select, success, tap } from '../../lib/feedback';
 import { findItem, money, optionLabels, round2 } from '../../lib/pricing';
 import { useStore } from '../../lib/store';
@@ -79,10 +79,9 @@ export default function MealSpotlight() {
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: c.background }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 150 + insets.bottom }} keyboardShouldPersistTaps="handled">
-        <View>
-          <FoodImage uri={item.photo} radiusValue={0} style={{ height: 380 }} transition={600} />
-          <LinearGradient colors={['rgba(0,0,0,0.45)', 'transparent', 'rgba(28,28,30,0.95)']} locations={[0, 0.4, 1]} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-          <View style={{ position: 'absolute', top: insets.top + 10, left: 16, right: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ paddingTop: insets.top + 10, alignItems: 'center', paddingBottom: 26 }}>
+          <LinearGradient colors={['rgba(255,120,20,0.30)', 'transparent']} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 420 }} />
+          <View style={{ position: 'absolute', top: insets.top + 10, left: 16, right: 16, flexDirection: 'row', justifyContent: 'space-between', zIndex: 2 }}>
             <IconButton icon="chevron-down" onPress={() => (router.canGoBack() ? router.back() : router.replace('/menu'))} />
             <IconButton
               icon={fav ? 'heart' : 'heart-outline'}
@@ -95,9 +94,12 @@ export default function MealSpotlight() {
               }}
             />
           </View>
+          <View style={{ marginTop: 44 }}>
+            <PlateHero uri={item.photo} size={290} />
+          </View>
         </View>
 
-        <View style={{ paddingHorizontal: space.lg, marginTop: -44 }}>
+        <View style={{ paddingHorizontal: space.lg, marginTop: 0 }}>
           <FadeIn style={{ gap: 10 }}>
             <View style={{ flexDirection: 'row', gap: 8 }}>
               {item.saleLabel ? <Tag label={item.saleLabel} tone="wine" /> : null}
@@ -170,7 +172,7 @@ export default function MealSpotlight() {
                               justifyContent: 'center',
                             }}
                           >
-                            <Ionicons name={on ? 'checkmark' : 'add'} size={18} color={on ? '#1C1C1E' : c.accent} />
+                            <Ionicons name={on ? 'checkmark' : 'add'} size={18} color={on ? '#0A0A0A' : c.accent} />
                           </View>
                         </Pressable>
                         {on
@@ -214,8 +216,8 @@ export default function MealSpotlight() {
                             opacity: p.soldOut ? 0.4 : 1,
                           }}
                         >
-                          <Ionicons name={on ? 'checkmark' : 'add'} size={14} color={on ? '#1C1C1E' : c.accent} />
-                          <Text style={{ fontFamily: fonts.sansMed, fontSize: 13, color: on ? '#1C1C1E' : c.text }}>
+                          <Ionicons name={on ? 'checkmark' : 'add'} size={14} color={on ? '#0A0A0A' : c.accent} />
+                          <Text style={{ fontFamily: fonts.sansMed, fontSize: 13, color: on ? '#0A0A0A' : c.text }}>
                             {p.name}  +{money(p.price)}
                           </Text>
                         </Pressable>
@@ -250,7 +252,7 @@ export default function MealSpotlight() {
           paddingHorizontal: space.lg,
           paddingTop: 14,
           paddingBottom: insets.bottom + 14,
-          backgroundColor: '#18181A',
+          backgroundColor: '#0A0A0A',
           borderTopWidth: 1,
           borderTopColor: c.line,
           flexDirection: 'row',

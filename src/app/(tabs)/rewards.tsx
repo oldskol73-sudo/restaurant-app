@@ -79,7 +79,7 @@ export default function Rewards() {
                       borderStyle: on ? 'solid' : 'dashed',
                     }}
                   >
-                    {on ? <Ionicons name="checkmark" size={26} color="#1C1C1E" /> : last ? <Ionicons name="gift-outline" size={22} color={c.accent} /> : <Text style={{ fontFamily: fonts.serif, color: c.muted, fontSize: 17 }}>{i + 1}</Text>}
+                    {on ? <Ionicons name="checkmark" size={26} color="#0A0A0A" /> : last ? <Ionicons name="gift-outline" size={22} color={c.accent} /> : <Text style={{ fontFamily: fonts.serif, color: c.muted, fontSize: 17 }}>{i + 1}</Text>}
                   </View>
                 );
               })}

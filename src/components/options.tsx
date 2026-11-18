@@ -59,7 +59,7 @@ export function OptionGroupPicker({
                 backgroundColor: on ? c.accent : 'transparent',
               }}
             >
-              <Text style={{ fontFamily: fonts.sansMed, fontSize: compact ? 12 : 13.5, color: on ? '#1C1C1E' : c.text }}>
+              <Text style={{ fontFamily: fonts.sansMed, fontSize: compact ? 12 : 13.5, color: on ? '#0A0A0A' : c.text }}>
                 {ch.label}
                 {ch.price ? `  +${money(ch.price)}` : ''}
               </Text>

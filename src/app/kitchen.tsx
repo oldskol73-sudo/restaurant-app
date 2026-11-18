@@ -2,9 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React from 'react';
-import { Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Banner, Body, Button, Eyebrow, FadeIn, FoodImage, GoldDivider, Heading, Logo } from '../components/ui';
+import { Banner, Body, Button, FadeIn, Logo, NavPill, PlateHero, StatBar } from '../components/ui';
+import { restaurant } from '../../restaurant.config';
 import { hoursLabel, isOpenNow, todayHours } from '../lib/hours';
 import { useStore } from '../lib/store';
 import { fonts, space, useColors } from '../theme';
@@ -26,99 +27,82 @@ export default function KitchenWelcome() {
     ).catch(() => {});
   };
 
+  const stats = [
+    { label: 'Today', value: hoursLabel(today).replace(/ /g, '').replace('–', '-') },
+    { label: 'Pickup', value: 'Only' },
+    { label: 'Pay', value: 'PayPal' },
+  ];
+
   return (
     <View style={{ flex: 1, backgroundColor: c.background }}>
-      <View style={StyleSheet.absoluteFill}>
-        <FoodImage uri={hero} radiusValue={0} showIcon={false} style={{ height: '58%' }} transition={900} />
-        <LinearGradient
-          colors={['rgba(28,28,30,0.35)', 'rgba(28,28,30,0.78)', c.background]}
-          locations={[0, 0.45, 0.62]}
-          style={StyleSheet.absoluteFill}
-        />
-      </View>
+      <LinearGradient
+        colors={['transparent', 'rgba(255,120,20,0.28)', 'rgba(255,159,28,0.10)', 'transparent']}
+        locations={[0.2, 0.55, 0.8, 1]}
+        style={StyleSheet.absoluteFill}
+        pointerEvents="none"
+      />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24, paddingHorizontal: space.lg }}>
+        <FadeIn style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
+            <Logo size={42} />
+            <View style={{ flex: 1 }}>
+              <Text numberOfLines={1} style={{ fontFamily: fonts.serif, color: c.text, fontSize: 16 }}>{settings.name}</Text>
+              <Text numberOfLines={1} style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 10.5 }}>{settings.tagline}</Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', gap: 6 }}>
+            <NavPill label="Store" icon="home-outline" onPress={() => router.replace('/')} />
+            {user ? <NavPill label="Account" onPress={() => router.push('/account')} /> : <NavPill label="Sign in" filled onPress={() => router.push('/signin')} />}
+          </View>
+        </FadeIn>
 
-      <View style={{ flex: 1, paddingTop: insets.top + 24, paddingBottom: insets.bottom + 16, paddingHorizontal: space.lg }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <FadeIn>
-            <Logo size={112} />
-          </FadeIn>
-          <FadeIn delay={150} style={{ alignItems: 'center', marginTop: 22 }}>
-            <Heading size={40} style={{ textAlign: 'center' }}>
-              {settings.name}
-            </Heading>
-            <Eyebrow style={{ marginTop: 10, textAlign: 'center' }}>{settings.tagline}</Eyebrow>
-          </FadeIn>
-          <FadeIn delay={300} style={{ width: '70%', marginTop: 22 }}>
-            <GoldDivider diamond />
-          </FadeIn>
-        </View>
+        <FadeIn delay={120} style={{ marginTop: 34 }}>
+          <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 52, lineHeight: 58 }}>{restaurant.heroLine1}</Text>
+          <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 52, lineHeight: 58 }}>{restaurant.heroLine2}</Text>
+          <Body size={15} style={{ marginTop: 14, maxWidth: 300 }}>{restaurant.heroSub}</Body>
+          <View style={{ height: 2, width: 190, backgroundColor: c.text, marginTop: 14 }} />
+        </FadeIn>
 
-        <FadeIn delay={450} style={{ gap: 14, marginBottom: 22 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-            <View
-              style={{
-                width: 9,
-                height: 9,
-                borderRadius: 5,
-                backgroundColor: open && !settings.paused ? c.success : c.wine,
-              }}
-            />
-            <Text style={{ fontFamily: fonts.sansSemi, color: c.text, fontSize: 14 }}>
+        <FadeIn delay={260} style={{ alignItems: 'center', marginTop: 30 }}>
+          <PlateHero uri={hero} size={270} />
+        </FadeIn>
+
+        <FadeIn delay={380} style={{ marginTop: 30, gap: 14 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+            <View style={{ width: 9, height: 9, borderRadius: 5, backgroundColor: open && !settings.paused ? c.success : c.wine }} />
+            <Text style={{ fontFamily: fonts.sansSemi, color: c.text, fontSize: 13.5 }}>
               {settings.paused ? 'Online ordering paused' : open ? 'Open now' : 'Closed right now'}
-              <Text style={{ fontFamily: fonts.sans, color: c.muted }}>{`  ·  Today ${hoursLabel(today)}`}</Text>
             </Text>
           </View>
+          <StatBar items={stats} />
           <Pressable onPress={openMaps} style={{ flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' }}>
             <Ionicons name="location-outline" size={16} color={c.accent} />
-            <Body muted size={13.5} style={{ textAlign: 'center' }}>
-              {settings.address}
-            </Body>
+            <Body muted size={13.5} style={{ textAlign: 'center' }}>{settings.address}</Body>
           </Pressable>
-          <Body muted size={12} style={{ textAlign: 'center', letterSpacing: 1.2, textTransform: 'uppercase' }}>
-            Pickup only · Pay with PayPal or cash at the counter
-          </Body>
         </FadeIn>
 
         {settings.paused ? (
-          <FadeIn delay={500} style={{ marginBottom: 14 }}>
+          <View style={{ marginTop: 14 }}>
             <Banner icon="pause-circle-outline" text="The kitchen is catching up. You can browse the menu, but new orders are paused for now." />
-          </FadeIn>
+          </View>
         ) : null}
 
-        <FadeIn delay={600} style={{ gap: 12 }}>
+        <FadeIn delay={500} style={{ gap: 12, marginTop: 22 }}>
           {activeOrder ? (
-            <Button
-              title={`Track order #${activeOrder.number}`}
-              icon="receipt-outline"
-              variant="wine"
-              onPress={() => router.push(`/order/${activeOrder.id}`)}
-            />
+            <Button title={`Track order #${activeOrder.number}`} icon="receipt-outline" variant="wine" onPress={() => router.push(`/order/${activeOrder.id}`)} />
           ) : null}
           <Button title="Start Order" icon="restaurant-outline" onPress={() => router.push('/menu')} />
-          {user ? (
-            <Button title={`Hi, ${user.name.split(' ')[0]} — My Account`} variant="outline" onPress={() => router.push('/account')} />
-          ) : (
-            <Button title="Sign In" variant="outline" onPress={() => router.push('/signin')} />
-          )}
-          <Pressable
-            onPress={() => router.push('/menu')}
-            style={{ alignItems: 'center', paddingVertical: 4 }}
-            hitSlop={8}
-          >
-            <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 13 }}>
-              No account needed — <Text style={{ color: c.accent, fontFamily: fonts.sansMed }}>continue as guest</Text>
-            </Text>
-          </Pressable>
+          <Button title="Explore the menu" variant="outline" onPress={() => router.push('/menu')} />
+          <Text style={{ textAlign: 'center', fontFamily: fonts.sans, color: c.muted, fontSize: 13 }}>
+            No account needed — <Text style={{ color: c.accent, fontFamily: fonts.sansMed }} onPress={() => router.push('/menu')}>continue as guest</Text>
+          </Text>
         </FadeIn>
 
-        <Pressable
-          onPress={() => router.push('/staff-login')}
-          style={{ alignSelf: 'center', marginTop: 12, flexDirection: 'row', gap: 6, alignItems: 'center', padding: 6 }}
-        >
+        <Pressable onPress={() => router.push('/staff-login')} style={{ alignSelf: 'center', marginTop: 12, flexDirection: 'row', gap: 6, alignItems: 'center', padding: 6 }}>
           <Ionicons name="lock-closed-outline" size={12} color={c.muted} />
           <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12 }}>Restaurant staff</Text>
         </Pressable>
-      </View>
+      </ScrollView>
     </View>
   );
 }

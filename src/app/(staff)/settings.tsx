@@ -9,6 +9,7 @@ import { defaultSettings, useStore } from '../../lib/store';
 import { fonts, radius, space, useColors } from '../../theme';
 
 const ACCENTS = [
+  { name: 'Orange', hex: '#FF9F1C' },
   { name: 'Gold', hex: '#C9A227' },
   { name: 'Copper', hex: '#C47A4A' },
   { name: 'Emerald', hex: '#3FA37A' },
@@ -17,6 +18,7 @@ const ACCENTS = [
   { name: 'Platinum', hex: '#BFC3C9' },
 ];
 const WINES = [
+  { name: 'Brick', hex: '#C2362B' },
   { name: 'Wine', hex: '#7A1F2B' },
   { name: 'Crimson', hex: '#A3262F' },
   { name: 'Plum', hex: '#5E2750' },
@@ -101,7 +103,7 @@ export default function Settings() {
                 justifyContent: 'center',
               }}
             >
-              {on ? <Ionicons name="checkmark" size={20} color="#1C1C1E" /> : null}
+              {on ? <Ionicons name="checkmark" size={20} color="#0A0A0A" /> : null}
             </View>
             <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 11 }}>{s.name}</Text>
           </Pressable>

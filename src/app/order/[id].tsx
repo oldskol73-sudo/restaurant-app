@@ -69,7 +69,7 @@ export default function OrderStatusScreen() {
         <FadeIn style={{ alignItems: 'center', gap: 8 }}>
           {fresh ? (
             <View style={{ width: 64, height: 64, borderRadius: 32, backgroundColor: c.accent, alignItems: 'center', justifyContent: 'center', marginBottom: 6 }}>
-              <Ionicons name="checkmark" size={36} color="#1C1C1E" />
+              <Ionicons name="checkmark" size={36} color="#0A0A0A" />
             </View>
           ) : null}
           <Eyebrow>{fresh ? 'Thank you, ' + order.name.split(' ')[0] : 'Order status'}</Eyebrow>
@@ -109,7 +109,7 @@ export default function OrderStatusScreen() {
                         borderColor: complete || current ? c.accent : c.line,
                       }}
                     >
-                      <Ionicons name={complete ? 'checkmark' : s.icon} size={22} color={complete || current ? '#1C1C1E' : c.muted} />
+                      <Ionicons name={complete ? 'checkmark' : s.icon} size={22} color={complete || current ? '#0A0A0A' : c.muted} />
                     </View>
                   </Pulse>
                   {i < STEPS.length - 1 ? <View style={{ width: 2, flex: 1, minHeight: 34, backgroundColor: complete ? c.accent : c.line }} /> : null}
