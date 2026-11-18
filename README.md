@@ -1,4 +1,4 @@
-# The Gilded Fork — Restaurant Ordering App (template)
+# Sweet Savor Cafe — Restaurant Ordering App (template)
 
 A pickup-only ordering app for iPhone and Android, built with React Native + Expo.
 Customers browse, order and pay (PayPal or cash at pickup); staff manage orders, the menu, settings and sales.

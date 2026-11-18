@@ -43,10 +43,10 @@ export type DayHours = { day: string; open: string; close: string; closed?: bool
 // 1. THE BASICS
 // ---------------------------------------------------------------------------
 export const restaurant = {
-  name: 'The Gilded Fork',
-  tagline: 'Modern American Kitchen',
+  name: 'Sweet Savor Cafe',
+  tagline: 'Pickup Kitchen',
   /** Two letters shown inside the gold logo ring. */
-  monogram: 'GF',
+  monogram: 'SS',
   /** Optional: paste a web address of your logo image. Leave '' to use the monogram. */
   logoUrl: '',
   address: '214 Harbor Street, Portsmouth, NH 03801',
@@ -102,7 +102,7 @@ export const rewards = {
 export const payments = {
   /** Paste your PayPal "Client ID" here when you go live. Empty = demo PayPal sheet. */
   paypalClientId: '',
-  paypalBusinessName: 'The Gilded Fork',
+  paypalBusinessName: 'Sweet Savor Cafe',
 };
 
 // ---------------------------------------------------------------------------
@@ -246,7 +246,7 @@ export const menu: MenuItem[] = [
   // ------------------------------ SANDWICHES --------------------------------
   {
     id: 'gilded-burger',
-    name: 'The Gilded Burger',
+    name: 'The Savor Burger',
     description:
       'Two smashed prime patties, aged cheddar, caramelized onions, pickles and truffle aioli on a toasted brioche bun.',
     price: 17,

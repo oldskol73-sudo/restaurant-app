@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "The Gilded Fork",
+    "name": "Sweet Savor Cafe",
     "slug": "restaurant-app",
     "scheme": "restaurantapp",
     "version": "1.0.0",
@@ -9,9 +9,9 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#1C1C1E",
     "splash": { "backgroundColor": "#1C1C1E" },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.gildedfork" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.sweetsavorcafe" },
     "android": {
-      "package": "com.example.gildedfork",
+      "package": "com.example.sweetsavorcafe",
       "adaptiveIcon": {
         "backgroundColor": "#1C1C1E",
         "foregroundImage": "./assets/android-icon-foreground.png"

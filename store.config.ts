@@ -58,8 +58,8 @@ export const storeCategories: StoreCategory[] = [
   },
   {
     id: 'kitchen',
-    title: 'DC Kitchen — Sweet Savor Cafe',
-    description: 'Order pickup meals from the Sweet Savor Cafe kitchen.',
+    title: 'Sweet Savor Cafe',
+    description: 'DC Kitchen — order pickup meals from the Sweet Savor Cafe.',
     image: img('5506492821'),
     kind: 'kitchen',
     url: 'https://iuicdc.company.site/products/dc-kitchen-sweet-savor-cafe',
