@@ -19,6 +19,8 @@
       "predictiveBackGestureEnabled": false
     },
     "web": { "favicon": "./assets/favicon.png", "bundler": "metro" },
+    "owner": "tspublisher",
+    "extra": { "eas": { "projectId": "51dc956f-5c4d-4fd4-b179-89dcc581e0b2" } },
     "plugins": [
       "expo-router",
       "expo-font",

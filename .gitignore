@@ -43,3 +43,7 @@ yarn-error.*
 # Secrets (InstantDB app id/admin token)
 .env
 .env.*
+
+# Editor files
+.idea/
+.vscode/
