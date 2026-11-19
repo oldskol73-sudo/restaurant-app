@@ -51,6 +51,8 @@ export type Order = {
   mine?: boolean;
   /** Not yet delivered to the shared database (retried automatically) */
   unsynced?: boolean;
+  /** Customer phone's push address (only staff can read it) */
+  pushToken?: string;
 };
 
 export type BagLine = { key: string; productId: string; qty: number; fields: Record<string, string> };

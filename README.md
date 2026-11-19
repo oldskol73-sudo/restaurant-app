@@ -55,3 +55,15 @@ Tip: after changing the file, in the app go to *Staff → Settings → Reset to 
 - `src/app/` — every screen (Welcome, Menu, Meal, Cart, Checkout, Order status, Account, Rewards; staff: Orders, Menu Manager, Sales, Settings)
 - `src/lib/store.tsx` — where data lives (swap this for an online database later)
 - `src/components/ui.tsx` — shared look & feel
+
+## Order-ready alerts (push notifications)
+**What it does:** when staff tap **Ready**, the customer's phone gets a notification, even if the app is closed. (If the app is open, the in-app banner appears either way.) The customer is asked for permission when they place an order with "App alert" or "Both".
+
+**One-time setup**
+1. Supabase → SQL Editor → run the latest `supabase/schema.sql` again (it adds a column for the phone's alert address).
+2. Make a free account at https://expo.dev.
+3. In the VS Code terminal, inside `restaurant-app`: `npx eas-cli login`, then `npx eas-cli init` (say yes to creating the project). This writes a project id into `app.json`, which push needs.
+4. **Testing:** iPhone — works inside Expo Go once step 3 is done. Android — Expo Go cannot receive push; make a development build: `npx eas-cli build:configure`, then `npx eas-cli build --profile development --platform android`, and install the file it gives you. (iPhone development builds need a paid Apple Developer account; Expo Go avoids that for testing.)
+5. Texts (SMS) are not built yet.
+
+If push is not set up, nothing breaks: the order still works and the in-app alert still shows.

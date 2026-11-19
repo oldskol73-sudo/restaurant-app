@@ -145,6 +145,7 @@ type PlaceOrderInput = {
   payment: PaymentType;
   notify: NotifyChoice;
   useReward: boolean;
+  pushToken?: string;
 };
 
 type Store = {
@@ -292,6 +293,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           createdAt: Date.now(),
           rewardUsed: discount > 0,
           mine: true,
+          pushToken: input.pushToken,
           unsynced: backendOn,
         };
         if (backendOn) {

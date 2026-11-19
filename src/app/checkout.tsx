@@ -7,6 +7,7 @@ import { Banner, Body, Button, Card, Eyebrow, FadeIn, Field, GoldDivider, Header
 import { select, success, warn } from '../lib/feedback';
 import { isOpenNow } from '../lib/hours';
 import { cartTotals, findItem, lineUnitPrice, money } from '../lib/pricing';
+import { registerForPush } from '../lib/push';
 import { useStore } from '../lib/store';
 import type { NotifyChoice, PaymentType } from '../lib/types';
 import { fonts, radius, space, useColors } from '../theme';
@@ -107,10 +108,11 @@ export default function Checkout() {
     if (cart.length === 0 && !placing.current) router.replace('/cart');
   }, [cart.length]);
 
-  const finish = () => {
+  const finish = async () => {
     if (placing.current) return;
     placing.current = true;
-    const order = placeOrder({ name, phone, payment, notify, useReward: canReward && useReward });
+    const pushToken = notify === 'text' ? null : await registerForPush();
+    const order = placeOrder({ name, phone, payment, notify, useReward: canReward && useReward, pushToken: pushToken ?? undefined });
     success();
     setShowPay(false);
     router.replace({ pathname: '/order/[id]', params: { id: order.id, fresh: '1' } });
@@ -277,7 +279,7 @@ export default function Checkout() {
         </View>
       </Screen>
 
-      <PayPalSheet visible={showPay} amount={totals.total} onApprove={finish} onCancel={() => setShowPay(false)} />
+      <PayPalSheet visible={showPay} amount={totals.total} onApprove={() => { finish(); }} onCancel={() => setShowPay(false)} />
     </KeyboardAvoidingView>
   );
 }

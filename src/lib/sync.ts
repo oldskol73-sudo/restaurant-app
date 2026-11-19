@@ -61,6 +61,7 @@ export async function submitOrder(o: Order, customerRef?: string): Promise<numbe
       notify: o.notify,
       reward_used: !!o.rewardUsed,
       customer_ref: customerRef ?? null,
+      push_token: o.pushToken ?? null,
     },
   });
   if (error) {

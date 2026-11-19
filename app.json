@@ -22,6 +22,7 @@
     "plugins": [
       "expo-router",
       "expo-font",
+      ["expo-notifications", { "color": "#FF9F1C" }],
       ["expo-image-picker", { "photosPermission": "Choose photos of your dishes for the menu." }]
     ]
   }

@@ -50,6 +50,7 @@ create table if not exists public.orders (
   created_at timestamptz not null default now(),
   ready_at timestamptz
 );
+alter table public.orders add column if not exists push_token text;
 create index if not exists orders_created_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);
 
@@ -95,12 +96,12 @@ returns table (id uuid, number int)
 language plpgsql security definer set search_path = public as $$
 begin
   return query
-  insert into public.orders (id, name, phone, lines, subtotal, discount, tax, total, payment, paid, notify, reward_used, customer_ref)
+  insert into public.orders (id, name, phone, lines, subtotal, discount, tax, total, payment, paid, notify, reward_used, customer_ref, push_token)
   values (
     coalesce((p->>'id')::uuid, gen_random_uuid()), left(p->>'name', 80), left(p->>'phone', 40), p->'lines',
     (p->>'subtotal')::numeric, coalesce((p->>'discount')::numeric, 0), (p->>'tax')::numeric, (p->>'total')::numeric,
     p->>'payment', coalesce((p->>'paid')::boolean, false), p->>'notify',
-    coalesce((p->>'reward_used')::boolean, false), left(p->>'customer_ref', 80)
+    coalesce((p->>'reward_used')::boolean, false), left(p->>'customer_ref', 80), left(p->>'push_token', 200)
   )
   returning orders.id, orders.number;
 end $$;

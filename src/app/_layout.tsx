@@ -1,17 +1,19 @@
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { Anton_400Regular } from '@expo-google-fonts/anton';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ReadyAlert } from '../components/ReadyAlert';
+import { listenForTaps, setupNotificationHandler } from '../lib/push';
 import { StoreProvider, useStore } from '../lib/store';
 import { useColors } from '../theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+setupNotificationHandler();
 
 function Shell() {
   const c = useColors();
@@ -29,6 +31,8 @@ function Shell() {
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => {});
   }, [ready]);
+
+  useEffect(() => listenForTaps((id) => router.push({ pathname: '/order/[id]', params: { id } })), []);
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: c.background }} />;
 

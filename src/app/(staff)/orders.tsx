@@ -6,6 +6,7 @@ import { Linking, Platform, Pressable, Text, View } from 'react-native';
 import { Body, Button, Card, Chip, EmptyState, Eyebrow, FadeIn, GoldDivider, Heading, Screen, Tag } from '../../components/ui';
 import { success, warn } from '../../lib/feedback';
 import { money } from '../../lib/pricing';
+import { sendPush } from '../../lib/push';
 import { playNewOrderChime } from '../../lib/sound';
 import { useStore } from '../../lib/store';
 import type { Order } from '../../lib/types';
@@ -71,6 +72,9 @@ export default function StaffOrders() {
     setStatus(o.id, 'ready');
     success();
     const msg = `${settings.name}: Hi ${o.name.split(' ')[0]}, order #${o.number} is ready for pickup!${o.payment === 'cash' && !o.paid ? ` Please bring ${money(o.total)} for the counter.` : ''}`;
+    if (o.pushToken && o.notify !== 'text') {
+      sendPush(o.pushToken, `Order #${o.number} is ready!`, `${settings.name} · Come to the counter for pickup`, { orderId: o.id });
+    }
     if (o.notify !== 'app') {
       try {
         if (Platform.OS === 'web') {

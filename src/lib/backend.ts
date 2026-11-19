@@ -74,6 +74,7 @@ export function rowToOrder(r: Row): Order {
     readyAt: r.ready_at ? Date.parse(r.ready_at) : undefined,
     rewardUsed: !!r.reward_used,
     alertSeen: !!r.alert_seen,
+    pushToken: r.push_token ?? undefined,
   };
 }
 
