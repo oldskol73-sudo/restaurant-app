@@ -9,9 +9,9 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0A0A0A",
     "splash": { "backgroundColor": "#0A0A0A" },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.sweetsavorcafe" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "org.israelunite.sweetsavorcafe" },
     "android": {
-      "package": "com.example.sweetsavorcafe",
+      "package": "org.israelunite.sweetsavorcafe",
       "adaptiveIcon": {
         "backgroundColor": "#0A0A0A",
         "foregroundImage": "./assets/android-icon-foreground.png"
