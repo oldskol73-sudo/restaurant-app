@@ -8,7 +8,7 @@ Also read `AGENTS.md` (Expo rules: use `npx expo install`, check docs for the in
 A React Native + Expo (SDK 58, Expo Router) app for iPhone and Android.
 - **Front page = the iuic.dc Store** (`src/app/index.tsx`), built from https://iuicdc.company.site/products. Data lives in `store.config.ts` (6 sections, products, shopping bag). Purchases are completed on the website (payment stays there).
 - **Sweet Savor Cafe** (the DC Kitchen) is a pickup-only ordering area reached from the "Sweet Savor Cafe" tile (`src/app/kitchen.tsx`, then `(tabs)` menu/cart/rewards/account, checkout, order status).
-- **Staff area** (PIN `1234`, set in `restaurant.config.ts`): Orders, Menu Manager, Settings, Sales (`src/app/(staff)/`).
+- **Staff area** (PIN `1234`, set in `restaurant.config.ts`): Orders, Menu Manager, Settings, Sales (`src/app/(staff)/`). The **Sales** tab has its own passcode `5678` (`salesPin`), asked every time it opens (`PinPad` component). Design notes and what was added beyond the original plan: `docs/DESIGN.md`.
 - Payments: PayPal or cash at pickup only. No credit cards. No delivery, no scheduled pickup times.
 
 ## One settings file per area

@@ -1,5 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
+import { PinPad } from '../../components/PinPad';
 import { Body, Card, Chip, EmptyState, Eyebrow, FadeIn, GoldDivider, Heading, Screen } from '../../components/ui';
 import { money } from '../../lib/pricing';
 import { useStore } from '../../lib/store';
@@ -54,8 +56,11 @@ function Ranking({ rows, color, bg }: { rows: { name: string; qty: number; reven
 export default function Sales() {
   const c = useColors();
   const {
-    state: { orders },
+    state: { orders, settings },
   } = useStore();
+  const [unlocked, setUnlocked] = useState(false);
+  // Lock again whenever the manager leaves this tab
+  useFocusEffect(useCallback(() => () => setUnlocked(false), []));
   const [range, setRange] = useState<'today' | 'week'>('today');
 
   const data = useMemo(() => {
@@ -128,6 +133,20 @@ export default function Sales() {
       addons: rank(addons),
     };
   }, [orders, range]);
+
+  if (!unlocked) {
+    return (
+      <Screen scroll={false}>
+        <PinPad
+          eyebrow="Sales"
+          title="Sales passcode"
+          subtitle="Enter the sales passcode to see reports."
+          verify={(pin) => pin === settings.salesPin}
+          onSuccess={() => setUnlocked(true)}
+        />
+      </Screen>
+    );
+  }
 
   return (
     <Screen>

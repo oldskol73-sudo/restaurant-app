@@ -60,6 +60,8 @@ export const restaurant = {
   currency: '$',
   /** 4-digit code staff type to open the staff screens. CHANGE THIS. */
   staffPin: '1234',
+  /** Extra 4-digit code needed to open the Sales tab (reports). CHANGE THIS. */
+  salesPin: '5678',
   /** Hours use 24-hour time. */
   hours: [
     { day: 'Monday', open: '11:00', close: '21:00' },

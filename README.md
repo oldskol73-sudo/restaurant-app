@@ -30,7 +30,7 @@ To see it in a web browser instead: run `npx expo start --web`.
 ## Try the whole flow
 1. Welcome → **Start Order** → tap a dish → add sides/extras → **Add to Order**.
 2. Open **Order** tab → **Continue to Checkout** → choose *Pay Cash at Pickup* (or PayPal demo) → place the order.
-3. On the order screen tap **Staff view** (or the small *Restaurant staff* link on the Welcome screen). **Staff PIN: 1234**.
+3. On the order screen tap **Staff view** (or the small *Restaurant staff* link on the Welcome screen). **Staff PIN: 1234** (the Sales tab asks for a second passcode, **5678**).
 4. In **Orders**: *Start preparing* → *Ready · notify customer*. Cash orders show a wine-red **UNPAID** bar. Use *Send a test order* to hear the new-order chime.
 5. Go back to the customer side — the alert banner and the "Ready for Pickup" step appear.
 

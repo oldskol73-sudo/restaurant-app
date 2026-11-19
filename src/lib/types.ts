@@ -64,6 +64,7 @@ export type Settings = {
   phone: string;
   taxRatePercent: number;
   staffPin: string;
+  salesPin: string;
   hours: DayHours[];
   accent: string;
   wine: string;

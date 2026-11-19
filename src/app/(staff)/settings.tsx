@@ -77,6 +77,7 @@ export default function Settings() {
   const [taxText, setTaxText] = useState(String(settings.taxRatePercent));
   const [confirmReset, setConfirmReset] = useState(false);
   const [pinText, setPinText] = useState(settings.staffPin);
+  const [salesPinText, setSalesPinText] = useState(settings.salesPin);
 
   const Swatches = ({ list, value, onPick }: { list: { name: string; hex: string }[]; value: string; onPick: (hex: string) => void }) => (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 14 }}>
@@ -229,9 +230,9 @@ export default function Settings() {
           </Card>
         </Section>
 
-        <Section title="Staff PIN" eyebrow="Security">
+        <Section title="PIN codes" eyebrow="Security">
           <Field
-            label="4-digit PIN"
+            label="Staff PIN (opens the staff screens)"
             value={pinText}
             keyboardType="number-pad"
             maxLength={4}
@@ -245,7 +246,22 @@ export default function Settings() {
               }
             }}
           />
-          {pinText.length < 4 ? <Banner tone="gold" icon="information-circle-outline" text="Type all 4 digits to change the PIN." /> : null}
+          <Field
+            label="Sales tab passcode"
+            value={salesPinText}
+            keyboardType="number-pad"
+            maxLength={4}
+            secureTextEntry
+            onChangeText={(t) => {
+              const d = t.replace(/\D/g, '').slice(0, 4);
+              setSalesPinText(d);
+              if (d.length === 4) {
+                updateSettings({ salesPin: d });
+                success();
+              }
+            }}
+          />
+          {pinText.length < 4 || salesPinText.length < 4 ? <Banner tone="gold" icon="information-circle-outline" text="Type all 4 digits to change a PIN." /> : null}
         </Section>
 
         <Section title="Demo data" eyebrow="Housekeeping">
@@ -261,6 +277,7 @@ export default function Settings() {
                   setConfirmReset(false);
                   setTaxText(String(defaultSettings().taxRatePercent));
                   setPinText(defaultSettings().staffPin);
+                setSalesPinText(defaultSettings().salesPin);
                 }}
               />
               <Button title="Cancel" variant="ghost" onPress={() => setConfirmReset(false)} />

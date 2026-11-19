@@ -33,6 +33,7 @@ export const defaultSettings = (): Settings => ({
   phone: restaurant.phone,
   taxRatePercent: restaurant.taxRatePercent,
   staffPin: restaurant.staffPin,
+  salesPin: restaurant.salesPin,
   hours: restaurant.hours.map((h) => ({ ...h })),
   accent: palette.accent,
   wine: palette.wine,
