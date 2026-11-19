@@ -8,6 +8,19 @@ import {
   rewards as rewardsConfig,
   type MenuItem,
 } from '../../restaurant.config';
+import * as Crypto from 'expo-crypto';
+import { backendOn } from './backend';
+import {
+  insertTestOrder,
+  pushAlertSeen,
+  pushMenuItem,
+  pushOrderPatch,
+  pushSettings,
+  pushSoldOut,
+  removeMenuItem,
+  submitOrder,
+  useBackendSync,
+} from './sync';
 import { cartTotals, findItem, rewardDiscount, toOrderLine, uid } from './pricing';
 import type {
   AppState,
@@ -136,6 +149,10 @@ type PlaceOrderInput = {
 
 type Store = {
   state: AppState;
+  /** Shared database info */
+  backend: { on: boolean; staffEmail: string | null; isDbStaff: boolean };
+  signInStaff: (email: string, password: string) => Promise<string | null>;
+  signOutStaff: () => Promise<void>;
   // cart
   addToCart: (line: Omit<CartLine, 'key'>) => void;
   updateQty: (key: string, qty: number) => void;
@@ -175,6 +192,9 @@ const Ctx = createContext<Store | null>(null);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AppState>(freshState);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sync = useBackendSync(state, setState);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   // Load saved data once
   useEffect(() => {
@@ -229,6 +249,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const store = useMemo<Store>(
     () => ({
       state,
+      backend: { on: backendOn, staffEmail: sync.staffEmail, isDbStaff: sync.dbStaff },
+      signInStaff: sync.signInStaff,
+      signOutStaff: sync.signOutStaff,
       addToCart: (line) =>
         setState((s) => ({ ...s, cart: [...s.cart, { ...line, key: uid() }] })),
       updateQty: (key, qty) =>
@@ -255,7 +278,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const number = s.orderCounter + 1;
         const lines = s.cart.map((l) => toOrderLine(s.menu, l)).filter((l): l is OrderLine => !!l);
         const order: Order = {
-          id: uid(),
+          id: backendOn ? Crypto.randomUUID() : uid(),
           number,
           userId: s.user?.id,
           name: input.name.trim(),
@@ -269,7 +292,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           createdAt: Date.now(),
           rewardUsed: discount > 0,
           mine: true,
+          unsynced: backendOn,
         };
+        if (backendOn) {
+          submitOrder(order, s.user?.id).then((n) => {
+            if (n != null) setState((p) => ({ ...p, orders: p.orders.map((x) => (x.id === order.id ? { ...x, number: n, unsynced: false } : x)) }));
+          });
+        }
         setState((p) => ({
           ...p,
           orders: [order, ...p.orders],
@@ -279,7 +308,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         }));
         return order;
       },
-      setStatus: (orderId, status) =>
+      setStatus: (orderId, status) => {
+        if (backendOn) {
+          pushOrderPatch(orderId, {
+            status,
+            ...(status === 'ready' ? { ready_at: new Date().toISOString() } : {}),
+            ...(status === 'completed' ? { paid: true } : {}),
+          });
+        }
         setState((s) => ({
           ...s,
           orders: s.orders.map((o) =>
@@ -293,11 +329,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                 }
               : o,
           ),
-        })),
-      markPaid: (orderId) =>
-        setState((s) => ({ ...s, orders: s.orders.map((o) => (o.id === orderId ? { ...o, paid: true } : o)) })),
-      markAlertSeen: (orderId) =>
-        setState((s) => ({ ...s, orders: s.orders.map((o) => (o.id === orderId ? { ...o, alertSeen: true } : o)) })),
+        }));
+      },
+      markPaid: (orderId) => {
+        if (backendOn) pushOrderPatch(orderId, { paid: true });
+        setState((s) => ({ ...s, orders: s.orders.map((o) => (o.id === orderId ? { ...o, paid: true } : o)) }));
+      },
+      markAlertSeen: (orderId) => {
+        if (backendOn && stateRef.current.orders.find((o) => o.id === orderId)?.mine) pushAlertSeen(orderId);
+        setState((s) => ({ ...s, orders: s.orders.map((o) => (o.id === orderId ? { ...o, alertSeen: true } : o)) }));
+      },
       addTestOrder: () => {
         const s = state;
         const pool = s.menu.filter((m) => !m.isAddOn && !m.soldOut);
@@ -322,7 +363,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const cash = Math.random() > 0.5;
         const names = ['Alex P.', 'Maria G.', 'Chris L.', 'Dana W.', 'Kai R.'];
         const order: Order = {
-          id: uid(),
+          id: backendOn ? Crypto.randomUUID() : uid(),
           number,
           name: pick(names),
           phone: '(603) 555-0199',
@@ -334,6 +375,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           status: 'received',
           createdAt: Date.now(),
         };
+        if (backendOn && sync.dbStaff) {
+          insertTestOrder(order); // shows up through live sync
+          return;
+        }
         setState((p) => ({ ...p, orders: [order, ...p.orders], orderCounter: number }));
       },
       reorder: (order) => {
@@ -387,20 +432,37 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         return false;
       },
       staffLogout: () => setState((s) => ({ ...s, staffAuthed: false })),
-      upsertItem: (item) =>
+      upsertItem: (item) => {
+        if (sync.dbStaff) {
+          const idx = stateRef.current.menu.findIndex((m) => m.id === item.id);
+          pushMenuItem(item, idx >= 0 ? idx : stateRef.current.menu.length);
+        }
         setState((s) => ({
           ...s,
           menu: s.menu.some((m) => m.id === item.id) ? s.menu.map((m) => (m.id === item.id ? item : m)) : [...s.menu, item],
-        })),
-      deleteItem: (id) =>
+        }));
+      },
+      deleteItem: (id) => {
+        if (sync.dbStaff) {
+          removeMenuItem(id);
+          stateRef.current.menu.forEach((m, i) => {
+            if (m.pairings.includes(id)) pushMenuItem({ ...m, pairings: m.pairings.filter((p) => p !== id) }, i);
+          });
+        }
         setState((s) => ({
           ...s,
           menu: s.menu.filter((m) => m.id !== id).map((m) => ({ ...m, pairings: m.pairings.filter((p) => p !== id) })),
           cart: s.cart.filter((l) => l.itemId !== id).map((l) => ({ ...l, extraIds: l.extraIds.filter((e) => e !== id) })),
-        })),
-      setSoldOut: (id, soldOut) =>
-        setState((s) => ({ ...s, menu: s.menu.map((m) => (m.id === id ? { ...m, soldOut } : m)) })),
-      updateSettings: (patch) => setState((s) => ({ ...s, settings: { ...s.settings, ...patch } })),
+        }));
+      },
+      setSoldOut: (id, soldOut) => {
+        if (sync.dbStaff) pushSoldOut(id, soldOut);
+        setState((s) => ({ ...s, menu: s.menu.map((m) => (m.id === id ? { ...m, soldOut } : m)) }));
+      },
+      updateSettings: (patch) => {
+        if (sync.dbStaff) pushSettings({ ...stateRef.current.settings, ...patch });
+        setState((s) => ({ ...s, settings: { ...s.settings, ...patch } }));
+      },
       resetAll: () => {
         const f = freshState();
         setState({ ...f, hydrated: true, staffAuthed: true });
@@ -409,7 +471,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       rewardsInfo,
       discountFor,
     }),
-    [state, rewardsInfo, discountFor],
+    [state, rewardsInfo, discountFor, sync.staffEmail, sync.dbStaff, sync.signInStaff, sync.signOutStaff],
   );
 
   return <Ctx.Provider value={store}>{children}</Ctx.Provider>;

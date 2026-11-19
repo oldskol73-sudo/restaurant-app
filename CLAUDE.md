@@ -19,8 +19,12 @@ Do not hard-code restaurant details elsewhere.
 ## Look and feel (follow the user's reference image)
 Black background (`#0A0A0A`), bright orange accent (`#FF9F1C`), warm white text, brick-red (`#C2362B`) for sale tags and "Unpaid". Anton for headlines, Inter for body. Rounded pill buttons, orange-outlined cards, **round plate photos with an orange ring and glow** (`PlateHero`), orange stat bar (`StatBar`), small outlined nav pills (`NavPill`). Shared pieces are in `src/components/ui.tsx`; colors come from `useColors()` (never hard-code).
 
-## State
-All data (menu, orders, cart, bag, settings) is in `src/lib/store.tsx`, saved on the phone with AsyncStorage. **Orders do not sync between phones yet.** Next big step: replace the store with a shared online database (InstantDB was suggested; needs the owner to log in and create an app) plus push notifications and automatic texts (e.g. Twilio).
+## State and shared database (Supabase)
+- Project: https://poyofvyolqsqfdjhjncv.supabase.co. URL + publishable key are in `restaurant.config.ts` (`backend`) — public by design; never commit a `service_role`/secret key. Empty values = local demo mode.
+- Local state (cart, bag, favorites, account, PINs) is in `src/lib/store.tsx`, saved on the phone. Shared data (menu, settings, orders) syncs through `src/lib/sync.ts` + `src/lib/backend.ts`.
+- Database setup and security rules: `supabase/schema.sql` (re-runnable). Customers read menu/settings and place orders through functions (`place_order`, `get_order`, `mark_alert_seen`); they cannot read the orders table. Only emails in `staff_emails` (checked by `is_staff()`) can edit menu/settings or see all orders. Staff do a one-time email+password sign-in (`src/app/staff-account.tsx`); the PIN pad is a quick unlock; PINs are NOT stored in the database.
+- InstantDB was dropped (it is shutting down and no longer creates apps). Plan/history: `docs/BACKEND_PLAN.md`.
+- Still to do: push notifications, automatic texts (e.g. Twilio), real PayPal, photo uploads to Supabase Storage.
 
 ## Known placeholders
 - Food photos are Unsplash links; store graphics are the website's own images. Owner will supply real artwork later (replace `photo`/`image` addresses).

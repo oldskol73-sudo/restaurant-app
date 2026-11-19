@@ -72,7 +72,7 @@ function Section({ title, children, eyebrow }: { title: string; children: React.
 
 export default function Settings() {
   const c = useColors();
-  const { state, updateSettings, resetAll, staffLogout } = useStore();
+  const { state, updateSettings, resetAll, staffLogout, backend } = useStore();
   const { settings } = state;
   const [taxText, setTaxText] = useState(String(settings.taxRatePercent));
   const [confirmReset, setConfirmReset] = useState(false);
@@ -142,6 +142,21 @@ export default function Settings() {
             thumbColor="#F5F0E6"
           />
         </Card>
+
+        {backend.on ? (
+          <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Ionicons name={backend.isDbStaff ? 'cloud-done' : 'cloud-offline'} size={28} color={backend.isDbStaff ? c.success : c.muted} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontFamily: fonts.sansSemi, color: c.text, fontSize: 15 }}>{backend.isDbStaff ? 'Shared database connected' : 'Not connected to the shared database'}</Text>
+              <Text style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 12.5, marginTop: 2 }}>
+                {backend.isDbStaff ? backend.staffEmail : 'Changes here stay on this phone until you sign in.'}
+              </Text>
+            </View>
+            <Pressable onPress={() => router.push('/staff-account')} hitSlop={8}>
+              <Text style={{ fontFamily: fonts.sansMed, color: c.accent, fontSize: 13 }}>{backend.isDbStaff ? 'Manage' : 'Sign in'}</Text>
+            </Pressable>
+          </Card>
+        ) : null}
 
         <Section title="Name & logo" eyebrow="Brand">
           <View style={{ alignItems: 'center' }}>

@@ -24,7 +24,7 @@ const startOfToday = () => {
 
 export default function StaffOrders() {
   const c = useColors();
-  const { state, setStatus, addTestOrder, staffLogout, markPaid } = useStore();
+  const { state, setStatus, addTestOrder, staffLogout, markPaid, backend } = useStore();
   const { orders, settings } = state;
   const [filter, setFilter] = useState<'active' | 'ready' | 'done'>('active');
   const [now, setNow] = useState(Date.now());
@@ -95,7 +95,7 @@ export default function StaffOrders() {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
               <View style={{ width: 9, height: 9, borderRadius: 5, backgroundColor: settings.paused ? c.wine : c.success }} />
-              <Eyebrow>{settings.paused ? 'Ordering paused' : 'Live · taking orders'}</Eyebrow>
+              <Eyebrow>{settings.paused ? 'Ordering paused' : backend.on && !backend.isDbStaff ? 'This phone only' : 'Live · taking orders'}</Eyebrow>
             </View>
             <Pressable
               onPress={() => {
@@ -210,7 +210,7 @@ export default function StaffOrders() {
             <Button title="Send a test order" variant="ghost" icon="add" onPress={addTestOrder} />
           ) : null}
           <Body muted size={11.5} style={{ textAlign: 'center' }}>
-            Demo mode: orders live on this phone. See the README to connect several phones.
+            {backend.isDbStaff ? 'Connected to the shared database — orders from every phone appear here.' : backend.on ? 'Not signed in to the shared database — only orders on this phone show.' : 'Demo mode: orders live on this phone only.'}
           </Body>
         </View>
       </Screen>

@@ -49,6 +49,8 @@ export type Order = {
   demo?: boolean;
   /** Placed from this phone (so this phone shows its status + alerts) */
   mine?: boolean;
+  /** Not yet delivered to the shared database (retried automatically) */
+  unsynced?: boolean;
 };
 
 export type BagLine = { key: string; productId: string; qty: number; fields: Record<string, string> };

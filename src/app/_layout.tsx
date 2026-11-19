@@ -54,6 +54,7 @@ function Shell() {
         <Stack.Screen name="edit-item" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="order/[id]" options={{ animation: 'fade' }} />
         <Stack.Screen name="signin" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="staff-account" />
         <Stack.Screen name="staff-login" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       </Stack>
       <ReadyAlert />

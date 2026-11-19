@@ -53,6 +53,21 @@ create table if not exists public.orders (
 create index if not exists orders_created_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);
 
+-- ---------- Staff allow-list ----------
+-- Only emails listed here count as staff. Nobody can read or edit this table through the app.
+create table if not exists public.staff_emails (email text primary key);
+alter table public.staff_emails enable row level security;
+
+create or replace function public.is_staff()
+returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from public.staff_emails
+    where lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );
+$$;
+grant execute on function public.is_staff() to anon, authenticated;
+
 -- ---------- Security (Row Level Security) ----------
 alter table public.menu_items enable row level security;
 alter table public.app_settings enable row level security;
@@ -62,17 +77,17 @@ alter table public.orders enable row level security;
 drop policy if exists "menu read" on public.menu_items;
 create policy "menu read" on public.menu_items for select to anon, authenticated using (true);
 drop policy if exists "menu staff write" on public.menu_items;
-create policy "menu staff write" on public.menu_items for all to authenticated using (true) with check (true);
+create policy "menu staff write" on public.menu_items for all to authenticated using (public.is_staff()) with check (public.is_staff());
 
 drop policy if exists "settings read" on public.app_settings;
 create policy "settings read" on public.app_settings for select to anon, authenticated using (true);
 drop policy if exists "settings staff write" on public.app_settings;
-create policy "settings staff write" on public.app_settings for all to authenticated using (true) with check (true);
+create policy "settings staff write" on public.app_settings for all to authenticated using (public.is_staff()) with check (public.is_staff());
 
 -- Orders contain names and phone numbers: customers cannot read the table at all.
 -- Only signed-in staff can see and update orders.
 drop policy if exists "orders staff all" on public.orders;
-create policy "orders staff all" on public.orders for all to authenticated using (true) with check (true);
+create policy "orders staff all" on public.orders for all to authenticated using (public.is_staff()) with check (public.is_staff());
 
 -- ---------- Customer functions (customers use these instead of reading the table) ----------
 create or replace function public.place_order(p jsonb)
@@ -80,9 +95,9 @@ returns table (id uuid, number int)
 language plpgsql security definer set search_path = public as $$
 begin
   return query
-  insert into public.orders (name, phone, lines, subtotal, discount, tax, total, payment, paid, notify, reward_used, customer_ref)
+  insert into public.orders (id, name, phone, lines, subtotal, discount, tax, total, payment, paid, notify, reward_used, customer_ref)
   values (
-    left(p->>'name', 80), left(p->>'phone', 40), p->'lines',
+    coalesce((p->>'id')::uuid, gen_random_uuid()), left(p->>'name', 80), left(p->>'phone', 40), p->'lines',
     (p->>'subtotal')::numeric, coalesce((p->>'discount')::numeric, 0), (p->>'tax')::numeric, (p->>'total')::numeric,
     p->>'payment', coalesce((p->>'paid')::boolean, false), p->>'notify',
     coalesce((p->>'reward_used')::boolean, false), left(p->>'customer_ref', 80)
@@ -113,3 +128,7 @@ do $$ begin
   begin alter publication supabase_realtime add table public.app_settings; exception when duplicate_object then null; end;
   begin alter publication supabase_realtime add table public.orders; exception when duplicate_object then null; end;
 end $$;
+
+-- ---------- LAST STEP: tell the database who your staff are ----------
+-- Replace with the email of the staff login you created (Authentication → Users), then run this one line:
+-- insert into public.staff_emails (email) values ('staff@example.com') on conflict do nothing;

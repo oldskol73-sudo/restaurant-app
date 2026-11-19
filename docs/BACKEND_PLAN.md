@@ -17,5 +17,8 @@ Goal: staff changes (menu, sold out, settings) show up on customers' phones, and
 - PIN codes and the Sales passcode stay on the staff phone, not in the shared database.
 - If the keys are missing the app runs in local demo mode (as today).
 
-## Work for Claude after the key is available
+## Status
+Done: schema, app wiring (menu, settings, orders, live sync, staff sign-in), customer side tested against the live project. Needs: owner runs the updated `supabase/schema.sql` + adds the staff email (last step in that file), turns off public signups, then test staff features with two windows.
+
+## Original work list (done)
 Add `@supabase/supabase-js`, a `src/lib/backend.ts`, and switch `src/lib/store.tsx` menu/settings/orders to Supabase with Realtime; staff-login gets the one-time email sign-in; seed `menu_items` from `restaurant.config.ts`; test with two windows.

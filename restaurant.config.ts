@@ -113,6 +113,16 @@ export const payments = {
 };
 
 // ---------------------------------------------------------------------------
+// 4b. SHARED DATABASE (Supabase). These two values are PUBLIC by design (safe to
+//     commit). The database's own rules decide who can read or change what.
+//     Leave both empty to run in local demo mode (data stays on one phone).
+// ---------------------------------------------------------------------------
+export const backend = {
+  supabaseUrl: 'https://poyofvyolqsqfdjhjncv.supabase.co',
+  supabaseKey: 'sb_publishable_rcIc5zBbjiXk2cb07gf45Q_vNnMgCsj',
+};
+
+// ---------------------------------------------------------------------------
 // 5. MENU
 // ---------------------------------------------------------------------------
 export const categories = ['Entrees', 'Sandwiches', 'Sides', 'Drinks', 'Desserts'];

@@ -5,7 +5,7 @@ import { Screen } from '../components/ui';
 import { useStore } from '../lib/store';
 
 export default function StaffLogin() {
-  const { staffLogin } = useStore();
+  const { staffLogin, backend } = useStore();
   return (
     <Screen scroll={false}>
       <PinPad
@@ -13,7 +13,7 @@ export default function StaffLogin() {
         title="Enter your PIN"
         subtitle="Default PIN is 1234. Change it in Settings."
         verify={staffLogin}
-        onSuccess={() => router.replace('/orders')}
+        onSuccess={() => router.replace(backend.on && !backend.isDbStaff ? '/staff-account' : '/orders')}
         onCancel={() => router.back()}
       />
     </Screen>
