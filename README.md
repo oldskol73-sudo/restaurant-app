@@ -64,6 +64,7 @@ Tip: after changing the file, in the app go to *Staff → Settings → Reset to 
 2. Make a free account at https://expo.dev.
 3. In the VS Code terminal, inside `restaurant-app`: `npx eas-cli login`, then `npx eas-cli init` (say yes to creating the project). This writes a project id into `app.json`, which push needs.
 4. **Testing:** iPhone — works inside Expo Go once step 3 is done. Android — Expo Go cannot receive push; make a development build: `npx eas-cli build:configure`, then `npx eas-cli build --profile development --platform android`, and install the file it gives you. (iPhone development builds need a paid Apple Developer account; Expo Go avoids that for testing.)
-5. Texts (SMS) are not built yet.
+5. **Decision (Nov 2026): Android lock-screen alerts are on hold.** Android phones in Expo Go use the in-app alert only. To add Android push later: create a free Firebase project, put `google-services.json` in this folder (it is picked up automatically by `app.config.js`), upload the Firebase service-account key at expo.dev → project → Credentials, then `npx eas-cli build --platform android --profile preview`. `eas.json` is already set up.
+6. Texts (SMS) are not built yet.
 
 If push is not set up, nothing breaks: the order still works and the in-app alert still shows.

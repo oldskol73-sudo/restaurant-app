@@ -29,6 +29,8 @@ export function setupNotificationHandler() {
 export async function registerForPush(): Promise<string | null> {
   try {
     if (Platform.OS === 'web' || !projectId) return null;
+    // Android in Expo Go cannot receive push (Expo SDK 53+). Skip quietly; the in-app alert still works.
+    if (Platform.OS === 'android' && Constants.appOwnership === 'expo') return null;
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'Order alerts',

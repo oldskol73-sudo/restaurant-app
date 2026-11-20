@@ -24,7 +24,7 @@ Black background (`#0A0A0A`), bright orange accent (`#FF9F1C`), warm white text,
 - Local state (cart, bag, favorites, account, PINs) is in `src/lib/store.tsx`, saved on the phone. Shared data (menu, settings, orders) syncs through `src/lib/sync.ts` + `src/lib/backend.ts`.
 - Database setup and security rules: `supabase/schema.sql` (re-runnable). Customers read menu/settings and place orders through functions (`place_order`, `get_order`, `mark_alert_seen`); they cannot read the orders table. Only emails in `staff_emails` (checked by `is_staff()`) can edit menu/settings or see all orders. Staff do a one-time email+password sign-in (`src/app/staff-account.tsx`); the PIN pad is a quick unlock; PINs are NOT stored in the database.
 - InstantDB was dropped (it is shutting down and no longer creates apps). Plan/history: `docs/BACKEND_PLAN.md`.
-- Still to do: push notifications, automatic texts (e.g. Twilio), real PayPal, photo uploads to Supabase Storage.
+- Push alerts: built (`src/lib/push.ts`) and work on iPhone (Expo Go) once an EAS project id exists (already in `app.json`). Android lock-screen push is ON HOLD (needs Firebase + a build; see README); Android uses the in-app banner. Still to do: automatic texts (e.g. Twilio), real PayPal, photo uploads to Supabase Storage.
 
 ## Known placeholders
 - Food photos are Unsplash links; store graphics are the website's own images. Owner will supply real artwork later (replace `photo`/`image` addresses).
