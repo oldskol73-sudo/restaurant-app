@@ -56,6 +56,9 @@ Tip: after changing the file, in the app go to *Staff → Settings → Reset to 
 - `src/lib/store.tsx` — where data lives (swap this for an online database later)
 - `src/components/ui.tsx` — shared look & feel
 
+## iPhone / Xcode build
+See **docs/IOS_BUILD.md** for step-by-step Mac instructions (Simulator, your own iPhone, TestFlight/App Store).
+
 ## Order-ready alerts (push notifications)
 **What it does:** when staff tap **Ready**, the customer's phone gets a notification, even if the app is closed. (If the app is open, the in-app banner appears either way.) The customer is asked for permission when they place an order with "App alert" or "Both".
 

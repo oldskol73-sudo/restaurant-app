@@ -8,8 +8,17 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0A0A0A",
-    "splash": { "backgroundColor": "#0A0A0A" },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "org.israelunite.sweetsavorcafe" },
+    "splash": {
+      "backgroundColor": "#0A0A0A"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "org.israelunite.sweetsavorcafe",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
     "android": {
       "package": "org.israelunite.sweetsavorcafe",
       "adaptiveIcon": {
@@ -18,14 +27,31 @@
       },
       "predictiveBackGestureEnabled": false
     },
-    "web": { "favicon": "./assets/favicon.png", "bundler": "metro" },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
     "owner": "tspublisher",
-    "extra": { "eas": { "projectId": "51dc956f-5c4d-4fd4-b179-89dcc581e0b2" } },
+    "extra": {
+      "eas": {
+        "projectId": "51dc956f-5c4d-4fd4-b179-89dcc581e0b2"
+      }
+    },
     "plugins": [
       "expo-router",
       "expo-font",
-      ["expo-notifications", { "color": "#FF9F1C" }],
-      ["expo-image-picker", { "photosPermission": "Choose photos of your dishes for the menu." }]
+      [
+        "expo-notifications",
+        {
+          "color": "#FF9F1C"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose photos of your dishes for the menu."
+        }
+      ]
     ]
   }
 }

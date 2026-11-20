@@ -52,3 +52,7 @@ yarn-error.*
 *service-account*.json
 *-firebase-adminsdk-*.json
 *.jks
+
+# Generated native projects (recreated by prebuild)
+/ios
+/android
