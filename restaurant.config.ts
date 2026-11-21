@@ -53,7 +53,7 @@ export const restaurant = {
   monogram: 'DC',
   /** Optional: paste a web address of your logo image. Leave '' to use the monogram. */
   logoUrl: '',
-  address: 'IUIC DC',
+  address: 'Upper Marlboro, MD 20772',
   phone: '(603) 555-0142',
   /** Sales tax, as a percent. 8 means 8%. */
   taxRatePercent: 8,
@@ -62,9 +62,9 @@ export const restaurant = {
   staffPin: '1234',
   /** Extra 4-digit code needed to open the Sales tab (reports). CHANGE THIS. */
   salesPin: '5678',
-  /** Hours use 24-hour time. */
+  /** Hours use 24-hour time. Only list the days you are open; a close time earlier than the open time runs past midnight. */
   hours: [
-  { day: 'Saturday', open: '10:00', close: '01:00' },
+    { day: 'Saturday', open: '21:00', close: '02:00' },
   ] as DayHours[],
 };
 

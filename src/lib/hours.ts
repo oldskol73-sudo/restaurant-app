@@ -1,5 +1,7 @@
 import type { DayHours } from '../../restaurant.config';
 
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export function fmtTime(t: string) {
   const [h, m] = t.split(':').map(Number);
   const ap = h >= 12 ? 'PM' : 'AM';
@@ -7,20 +9,38 @@ export function fmtTime(t: string) {
   return m ? `${hh}:${String(m).padStart(2, '0')} ${ap}` : `${hh} ${ap}`;
 }
 
+const toMinutes = (t: string) => {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+};
+
+/** True when the hours run past midnight (e.g. 9 PM – 2 AM). */
+const runsPastMidnight = (h: DayHours) => toMinutes(h.close) <= toMinutes(h.open);
+
+const findDay = (hours: DayHours[], dayIndex: number) => hours.find((h) => h.day === DAY_NAMES[(dayIndex + 7) % 7]);
+
+/** Hours for today's day of the week, or undefined when the cafe doesn't open today. */
 export function todayHours(hours: DayHours[], now = new Date()) {
-  const idx = (now.getDay() + 6) % 7; // Monday = 0
-  return hours[idx];
+  return findDay(hours, now.getDay());
 }
 
-export function hoursLabel(h: DayHours) {
-  return h.closed ? 'Closed' : `${fmtTime(h.open)} – ${fmtTime(h.close)}`;
+export function hoursLabel(h?: DayHours) {
+  return !h || h.closed ? 'Closed' : `${fmtTime(h.open)} – ${fmtTime(h.close)}`;
 }
 
 export function isOpenNow(hours: DayHours[], now = new Date()) {
-  const h = todayHours(hours, now);
-  if (!h || h.closed) return false;
   const mins = now.getHours() * 60 + now.getMinutes();
-  const [oh, om] = h.open.split(':').map(Number);
-  const [ch, cm] = h.close.split(':').map(Number);
-  return mins >= oh * 60 + om && mins < ch * 60 + cm;
+
+  // Today's session, which started today
+  const today = findDay(hours, now.getDay());
+  if (today && !today.closed) {
+    if (mins >= toMinutes(today.open) && (runsPastMidnight(today) || mins < toMinutes(today.close))) return true;
+  }
+
+  // Yesterday's session that ran past midnight into this morning
+  const yesterday = findDay(hours, now.getDay() - 1);
+  if (yesterday && !yesterday.closed && runsPastMidnight(yesterday)) {
+    return mins < toMinutes(yesterday.close);
+  }
+  return false;
 }

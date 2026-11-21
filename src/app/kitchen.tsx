@@ -27,7 +27,10 @@ export default function KitchenWelcome() {
   };
 
   const stats = [
-    { label: 'Today', value: hoursLabel(today).replace(/ /g, '').replace('–', '-') },
+    // Not open today: show the first day the cafe is open instead
+    today
+      ? { label: 'Today', value: hoursLabel(today).replace(/ /g, '').replace('–', '-') }
+      : { label: 'Open', value: `${settings.hours[0]?.day.slice(0, 3) ?? ''} ${hoursLabel(settings.hours[0]).replace(/ /g, '').replace('–', '-')}`.trim() },
     { label: 'Pickup', value: 'Only' },
     { label: 'Pay', value: 'PayPal' },
   ];
