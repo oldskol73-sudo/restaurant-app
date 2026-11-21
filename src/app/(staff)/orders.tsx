@@ -119,10 +119,10 @@ export default function StaffOrders() {
           <GoldDivider diamond style={{ marginTop: 14 }} />
         </View>
 
-        <View style={{ flexDirection: 'row', gap: 8, padding: space.lg, paddingBottom: space.sm }}>
-          <Chip label={`Active · ${counts.active}`} active={filter === 'active'} onPress={() => setFilter('active')} />
-          <Chip label={`Ready · ${counts.ready}`} active={filter === 'ready'} onPress={() => setFilter('ready')} />
-          <Chip label={`Done today · ${counts.done}`} active={filter === 'done'} onPress={() => setFilter('done')} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 8, padding: space.lg, paddingBottom: space.sm }}>
+          <Chip label={`Active · ${counts.active}`} active={filter === 'active'} fit onPress={() => setFilter('active')} />
+          <Chip label={`Ready · ${counts.ready}`} active={filter === 'ready'} fit onPress={() => setFilter('ready')} />
+          <Chip label={`Done today · ${counts.done}`} active={filter === 'done'} fit onPress={() => setFilter('done')} />
         </View>
 
         <View style={{ paddingHorizontal: space.lg, gap: 16 }}>

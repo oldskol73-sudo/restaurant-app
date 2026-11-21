@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Banner, Body, Button, FadeIn, Logo, NavPill, PlateHero, StatBar } from '../components/ui';
+import { Banner, Body, Button, FadeIn, FoodImage, NavPill, PlateHero, StatBar } from '../components/ui';
 import { restaurant } from '../../restaurant.config';
 import { hoursLabel, isOpenNow, todayHours } from '../lib/hours';
 import { useStore } from '../lib/store';
@@ -17,7 +17,6 @@ export default function KitchenWelcome() {
   const { settings, user, menu, orders } = state;
   const open = isOpenNow(settings.hours);
   const today = todayHours(settings.hours);
-  const hero = menu.find((m) => m.id === 'ribeye')?.photo ?? menu.find((m) => m.photo)?.photo;
   const activeOrder = orders.find((o) => o.mine && o.status !== 'completed');
 
   const openMaps = () => {
@@ -44,7 +43,9 @@ export default function KitchenWelcome() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24, paddingHorizontal: space.lg }}>
         <FadeIn style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
-            <Logo size={42} />
+            <View style={{ width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, borderColor: c.accent, padding: 2 }}>
+              <FoodImage uri={require('../../assets/Sweet-savor-logo.jpg')} style={{ flex: 1 }} radiusValue={20} />
+            </View>
             <View style={{ flex: 1 }}>
               <Text numberOfLines={1} style={{ fontFamily: fonts.serif, color: c.text, fontSize: 16 }}>{settings.name}</Text>
               <Text numberOfLines={1} style={{ fontFamily: fonts.sans, color: c.muted, fontSize: 10.5 }}>{settings.tagline}</Text>
@@ -64,7 +65,7 @@ export default function KitchenWelcome() {
         </FadeIn>
 
         <FadeIn delay={260} style={{ alignItems: 'center', marginTop: 30 }}>
-          <PlateHero uri={hero} size={270} />
+          <PlateHero uri={require('../../assets/Sweet-savor.jpg')} size={270} />
         </FadeIn>
 
         <FadeIn delay={380} style={{ marginTop: 30, gap: 14 }}>

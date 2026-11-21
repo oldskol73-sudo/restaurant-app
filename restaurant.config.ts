@@ -44,16 +44,16 @@ export type DayHours = { day: string; open: string; close: string; closed?: bool
 // ---------------------------------------------------------------------------
 export const restaurant = {
   name: 'Sweet Savor Cafe',
-  tagline: 'Pickup Kitchen',
+  tagline: 'School Cafe',
   /** Big headline on the kitchen's front screen (white line, then orange line). */
   heroLine1: 'Fresh. Hot.',
   heroLine2: 'Ready for Pickup',
   heroSub: 'Order ahead, skip the line, and pay with PayPal or cash at the counter.',
   /** Two letters shown inside the gold logo ring. */
-  monogram: 'SS',
+  monogram: 'DC',
   /** Optional: paste a web address of your logo image. Leave '' to use the monogram. */
   logoUrl: '',
-  address: '214 Harbor Street, Portsmouth, NH 03801',
+  address: 'IUIC DC',
   phone: '(603) 555-0142',
   /** Sales tax, as a percent. 8 means 8%. */
   taxRatePercent: 8,
@@ -64,13 +64,7 @@ export const restaurant = {
   salesPin: '5678',
   /** Hours use 24-hour time. */
   hours: [
-    { day: 'Monday', open: '11:00', close: '21:00' },
-    { day: 'Tuesday', open: '11:00', close: '21:00' },
-    { day: 'Wednesday', open: '11:00', close: '21:00' },
-    { day: 'Thursday', open: '11:00', close: '22:00' },
-    { day: 'Friday', open: '11:00', close: '23:00' },
-    { day: 'Saturday', open: '10:00', close: '23:00' },
-    { day: 'Sunday', open: '10:00', close: '20:00' },
+  { day: 'Saturday', open: '10:00', close: '01:00' },
   ] as DayHours[],
 };
 
@@ -148,7 +142,7 @@ export const optionGroups: OptionGroup[] = [
       { id: 'mild', label: 'Mild', price: 0 },
       { id: 'med', label: 'Medium', price: 0 },
       { id: 'hot', label: 'Hot', price: 0 },
-      { id: 'xhot', label: 'Nashville Hot', price: 0 },
+      { id: 'xhot', label: 'DC Hot', price: 0 },
     ],
   },
   {
@@ -156,7 +150,6 @@ export const optionGroups: OptionGroup[] = [
     label: 'How would you like it cooked?',
     required: true,
     choices: [
-      { id: 'mr', label: 'Medium Rare', price: 0 },
       { id: 'm', label: 'Medium', price: 0 },
       { id: 'mw', label: 'Medium Well', price: 0 },
       { id: 'wd', label: 'Well Done', price: 0 },
@@ -232,20 +225,6 @@ export const menu: MenuItem[] = [
     soldOut: false,
     optionGroupIds: [],
     pairings: ['garden-salad', 'tomato-soup', 'iced-tea', 'tiramisu', 'extra-cheese'],
-  },
-  {
-    id: 'ribs',
-    name: 'Smoked Baby Back Ribs',
-    description:
-      'Half rack, hickory-smoked for six hours and glazed with our house bourbon barbecue. Served with slaw.',
-    price: 32,
-    category: 'Entrees',
-    photo: photo('1544025162-d76694265947'),
-    saleLabel: 'Weekend Special',
-    wasPrice: 35,
-    soldOut: false,
-    optionGroupIds: [],
-    pairings: ['onion-rings', 'mac', 'bbq', 'hot-honey', 'lemonade', 'brownie'],
   },
   {
     id: 'chicken',

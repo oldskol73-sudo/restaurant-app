@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { featuredProductIds, storeCategories, storeInfo, storeProducts } from '../../store.config';
-import { Body, FadeIn, FoodImage, Heading, NavPill, PlateHero, Screen, StatBar } from '../components/ui';
+import { Body, FadeIn, FoodImage, Heading, NavPill, PlateHero, Screen } from '../components/ui';
 import { tap } from '../lib/feedback';
 import { money } from '../lib/pricing';
 import { useStore } from '../lib/store';
@@ -16,7 +16,7 @@ export default function StoreHome() {
   const bagCount = (state.bag ?? []).reduce((s, l) => s + l.qty, 0);
   const featured = storeProducts.filter((p) => featuredProductIds.includes(p.id));
 
-  const heroImg = featured[0]?.image ?? storeCategories[0].image;
+  const heroImg = require('../../assets/Store-Emblem.png');
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={['rgba(255,120,20,0.26)', 'transparent']} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 520 }} pointerEvents="none" />
@@ -24,8 +24,8 @@ export default function StoreHome() {
         <View style={{ paddingHorizontal: space.lg, paddingTop: space.md }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <View style={{ width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, borderColor: c.accent, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontFamily: fonts.serif, color: c.accent, fontSize: 15, letterSpacing: 1 }}>DC</Text>
+              <View style={{ width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, borderColor: c.accent, padding: 2 }}>
+                <FoodImage uri={require('../../assets/Store-Emblem.png')} style={{ flex: 1 }} radiusValue={20} />
               </View>
               <View>
                 <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 18 }}>{storeInfo.name}</Text>
@@ -46,11 +46,8 @@ export default function StoreHome() {
           </FadeIn>
 
           <FadeIn delay={200} style={{ alignItems: 'center', marginTop: 26 }}>
-            <PlateHero uri={heroImg} size={250} icon="ticket-outline" />
+            <PlateHero uri={heroImg} size={300} icon="ticket-outline" />
           </FadeIn>
-          <View style={{ marginTop: 26 }}>
-            <StatBar items={[{ label: 'Sections', value: String(storeCategories.length) }, { label: 'Kitchen', value: 'Pickup' }, { label: 'Pay', value: 'PayPal' }]} />
-          </View>
         </View>
 
         <View style={{ padding: space.lg, gap: 14 }}>
@@ -69,7 +66,7 @@ export default function StoreHome() {
                   style={{ borderRadius: radius.lg, backgroundColor: c.surface, borderWidth: 1.5, borderColor: c.line, padding: 12, alignItems: 'center', gap: 10, minHeight: 200 }}
                 >
                   <View style={{ width: 104, height: 104, borderRadius: 52, borderWidth: 3, borderColor: c.accent, padding: 3 }}>
-                    <FoodImage uri={cat.image} style={{ flex: 1 }} radiusValue={50} icon={cat.kind === 'kitchen' ? 'restaurant-outline' : 'bag-handle-outline'} />
+                    <FoodImage uri={cat.image} focusX={cat.focusX} style={{ flex: 1 }} radiusValue={50} icon={cat.kind === 'kitchen' ? 'restaurant-outline' : 'bag-handle-outline'} />
                   </View>
                   <Text style={{ fontFamily: fonts.serif, color: c.text, fontSize: 16, textAlign: 'center', lineHeight: 20 }} numberOfLines={3}>
                     {cat.title}

@@ -269,12 +269,15 @@ export function Chip({
   onPress,
   icon,
   style,
+  fit,
 }: {
   label: string;
   active?: boolean;
   onPress: () => void;
   icon?: IconName;
   style?: StyleProp<ViewStyle>;
+  /** Fill an equal share of the row and shrink the text to fit, instead of sizing to the text */
+  fit?: boolean;
 }) {
   const c = useColors();
   return (
@@ -295,11 +298,19 @@ export function Chip({
           borderColor: active ? c.accent : c.line,
           backgroundColor: active ? c.accent : 'transparent',
         },
+        fit ? { flex: 1, minWidth: 0, justifyContent: 'center', paddingHorizontal: 6 } : null,
         style,
       ]}
     >
       {icon ? <Ionicons name={icon} size={14} color={active ? '#0A0A0A' : c.accent} /> : null}
-      <Text style={{ fontFamily: fonts.sansMed, fontSize: 13, color: active ? '#0A0A0A' : c.text }}>{label}</Text>
+      <Text
+        numberOfLines={fit ? 1 : undefined}
+        adjustsFontSizeToFit={fit}
+        minimumFontScale={0.7}
+        style={{ fontFamily: fonts.sansMed, fontSize: 13, color: active ? '#0A0A0A' : c.text, textAlign: 'center' }}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -326,13 +337,17 @@ export function FoodImage({
   icon = 'restaurant-outline',
   transition = 400,
   showIcon = true,
+  focusX = 50,
 }: {
-  uri?: string;
+  /** Web address, or a bundled image from require('../assets/...') */
+  uri?: string | number;
   style?: StyleProp<ViewStyle>;
   radiusValue?: number;
   icon?: IconName;
   transition?: number;
   showIcon?: boolean;
+  /** For wide pictures cropped to a square/circle: 0 = keep the left side, 50 = center, 100 = keep the right side */
+  focusX?: number;
 }) {
   const c = useColors();
   const [failed, setFailed] = useState(false);
@@ -341,9 +356,10 @@ export function FoodImage({
     <View style={[{ borderRadius: radiusValue, overflow: 'hidden', backgroundColor: c.surfaceHigh }, style]}>
       {show ? (
         <Image
-          source={{ uri }}
+          source={typeof uri === 'number' ? uri : { uri }}
           style={StyleSheet.absoluteFill}
           contentFit="cover"
+          contentPosition={{ left: `${focusX}%`, top: '50%' }}
           transition={transition}
           onError={() => setFailed(true)}
         />
@@ -652,7 +668,7 @@ export { shadow };
 /* ------------------------- Reference-style pieces ------------------------- */
 
 /** Round plate photo with an orange ring and warm glow, like the hero in the design. */
-export function PlateHero({ uri, size = 250, icon = 'restaurant-outline' }: { uri?: string; size?: number; icon?: IconName }) {
+export function PlateHero({ uri, size = 250, icon = 'restaurant-outline' }: { uri?: string | number; size?: number; icon?: IconName }) {
   const c = useColors();
   return (
     <View

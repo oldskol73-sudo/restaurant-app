@@ -27,7 +27,8 @@ export type StoreProduct = {
   /** Price in dollars. Leave undefined when the website shows no fixed price. */
   price?: number;
   priceNote?: string;
-  image: string;
+  /** Web address, or a bundled file from the assets folder */
+  image: string | number;
   description: string;
   /** Extra bullet lines shown under the description */
   details?: string[];
@@ -42,7 +43,10 @@ export type StoreCategory = {
   id: string;
   title: string;
   description: string;
-  image: string;
+  /** Web address, or a bundled file from the assets folder */
+  image: string | number;
+  /** Wide pictures are cropped to a circle on the home page: 0 = keep left side, 50 = center, 100 = keep right side */
+  focusX?: number;
   /** 'kitchen' opens the restaurant ordering area inside the app */
   kind?: 'kitchen';
   url: string;
@@ -50,17 +54,18 @@ export type StoreCategory = {
 
 export const storeCategories: StoreCategory[] = [
   {
-    id: 'school-store',
-    title: 'DC School Store',
-    description: 'Purchase the latest Original Royalty products along with essential study supplies. Sowing services also available.',
-    image: img('5501947775'),
-    url: 'https://iuicdc.company.site/products/dc-school-store',
+    id: 'alms',
+    title: 'Alms',
+    description: 'Give toward feeding the children and feast day needs.',
+    image: require('./assets/Give-Alms.png'),
+    focusX: 41,
+    url: 'https://iuicdc.company.site/products/alms-193879506',
   },
   {
     id: 'kitchen',
     title: 'Sweet Savor Cafe',
     description: 'DC Kitchen — order pickup meals from the Sweet Savor Cafe.',
-    image: img('5506492821'),
+    image: require('./assets/Sweet-savor.jpg'),
     kind: 'kitchen',
     url: 'https://iuicdc.company.site/products/dc-kitchen-sweet-savor-cafe',
   },
@@ -68,28 +73,31 @@ export const storeCategories: StoreCategory[] = [
     id: 'events',
     title: 'Local School Events',
     description: 'Tickets and registration for local school events.',
-    image: img('5504410151'),
+    image: require('./assets/Fellowship-Fun.png'),
+    focusX: 30,
     url: 'https://iuicdc.company.site/products/local-school-events',
   },
   {
-    id: 'alms',
-    title: 'Alms',
-    description: 'Give toward feeding the children and feast day needs.',
-    image: img('5504416931'),
-    url: 'https://iuicdc.company.site/products/alms-193879506',
+    id: 'school-store',
+    title: 'DC School Store',
+    description: 'Purchase the latest Original Royalty products along with essential study supplies. Sowing services also available.',
+    image: require('./assets/Store-Emblem.png'),
+    url: 'https://iuicdc.company.site/products/dc-school-store',
   },
   {
     id: 'prophets',
     title: 'Traveling Prophets Support',
     description: 'Help us send our local Prophets worldwide. We appreciate your support to help spread the truth worldwide. Shalom. MHNCB',
-    image: img('5506470032'),
+    image: require('./assets/TP-Outreach.png'),
+    focusX: 10,
     url: 'https://iuicdc.company.site/products/traveling-prophets-support',
   },
   {
     id: 'fundraisers',
     title: 'Fundraisers',
     description: "Shalom Israel. Let's support our local fundraiser events.",
-    image: img('5506460454'),
+    image: require('./assets/Community-Fundraiser.png'),
+    focusX: 38,
     url: 'https://iuicdc.company.site/products/fundraisers',
   },
 ];
@@ -119,7 +127,7 @@ export const storeProducts: StoreProduct[] = [
     title: 'Kids Plate Donation',
     priceNote: '$5 a month feeds a child',
     price: 5,
-    image: img('5506460039'),
+    image: require('./assets/Kids-Plate.png'),
     description: "Shalom Israel. Let's make sure we take care of our children. All we need is $5 a month to feed the children in the school. This is for after Sabbath meals.",
     url: 'https://iuicdc.company.site/products/kids-plate-donation',
   },
