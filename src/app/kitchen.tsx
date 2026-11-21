@@ -44,7 +44,7 @@ export default function KitchenWelcome() {
         <FadeIn style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
             <View style={{ width: 42, height: 42, borderRadius: 21, borderWidth: 1.5, borderColor: c.accent, padding: 2 }}>
-              <FoodImage uri={require('../../assets/Sweet-savor-logo.jpg')} style={{ flex: 1 }} radiusValue={20} />
+              <FoodImage uri={require('../../assets/Store-Emblem.png')} style={{ flex: 1 }} radiusValue={20} />
             </View>
             <View style={{ flex: 1 }}>
               <Text numberOfLines={1} style={{ fontFamily: fonts.serif, color: c.text, fontSize: 16 }}>{settings.name}</Text>

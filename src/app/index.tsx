@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { featuredProductIds, storeCategories, storeInfo, storeProducts } from '../../store.config';
+import { featuredProductIds, isEventExpired, productImage, storeCategories, storeInfo, storeProducts } from '../../store.config';
 import { Body, FadeIn, FoodImage, Heading, NavPill, PlateHero, Screen } from '../components/ui';
 import { tap } from '../lib/feedback';
 import { money } from '../lib/pricing';
@@ -85,7 +85,13 @@ export default function StoreHome() {
                 <Heading size={28}>Featured</Heading>
                 <View style={{ flex: 1, height: 1, backgroundColor: c.line }} />
               </View>
-              {featured.map((p) => (
+              {featured.map((p) =>
+                isEventExpired(p) ? (
+                  // Past event: the Stay Tuned picture fills the whole tile
+                  <View key={p.id} accessibilityLabel="Stay Tuned" style={{ borderRadius: radius.lg, borderWidth: 1.5, borderColor: c.line, overflow: 'hidden' }}>
+                    <FoodImage uri={productImage(p)} radiusValue={0} style={{ aspectRatio: 1024 / 1280 }} icon="ticket-outline" />
+                  </View>
+                ) : (
                 <Pressable
                   key={p.id}
                   onPress={() => {
@@ -95,7 +101,7 @@ export default function StoreHome() {
                   style={{ borderRadius: radius.lg, backgroundColor: c.surface, borderWidth: 1.5, borderColor: c.line, padding: 12, flexDirection: 'row', gap: 14, alignItems: 'center' }}
                 >
                   <View style={{ width: 96, height: 96, borderRadius: 48, borderWidth: 3, borderColor: c.accent, padding: 3 }}>
-                    <FoodImage uri={p.image} style={{ flex: 1 }} radiusValue={44} icon="ticket-outline" />
+                    <FoodImage uri={productImage(p)} style={{ flex: 1 }} radiusValue={44} icon="ticket-outline" />
                   </View>
                   <View style={{ flex: 1, gap: 6 }}>
                     <Heading size={20}>{p.title}</Heading>
@@ -105,7 +111,8 @@ export default function StoreHome() {
                     </View>
                   </View>
                 </Pressable>
-              ))}
+              ),
+              )}
             </View>
           ) : null}
         </View>

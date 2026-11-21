@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { storeCategories, storeProducts } from '../../../store.config';
+import { isEventExpired, productImage, storeCategories, storeProducts } from '../../../store.config';
 import { Body, Button, EmptyState, FadeIn, FoodImage, GoldDivider, Heading, IconButton } from '../../components/ui';
 import { tap } from '../../lib/feedback';
 import { money } from '../../lib/pricing';
@@ -51,7 +51,14 @@ export default function ShopCategory() {
             <Button title="Open on the website" variant="outline" icon="open-outline" onPress={() => WebBrowser.openBrowserAsync(cat.url)} />
           </View>
         ) : (
-          products.map((p, i) => (
+          products.map((p, i) =>
+            isEventExpired(p) ? (
+              <FadeIn key={p.id} delay={i * 80}>
+                <View accessibilityLabel="Stay Tuned" style={[{ borderRadius: radius.lg, overflow: 'hidden' }, shadow]}>
+                  <FoodImage uri={productImage(p)} style={{ aspectRatio: 1024 / 1280 }} radiusValue={0} icon="gift-outline" />
+                </View>
+              </FadeIn>
+            ) : (
             <FadeIn key={p.id} delay={i * 80}>
               <Pressable
                 onPress={() => {
@@ -60,7 +67,7 @@ export default function ShopCategory() {
                 }}
                 style={[{ borderRadius: radius.lg, backgroundColor: c.surface, overflow: 'hidden' }, shadow]}
               >
-                <FoodImage uri={p.image} style={{ height: 190 }} radiusValue={0} icon="gift-outline" />
+                <FoodImage uri={productImage(p)} style={{ height: 190 }} radiusValue={0} icon="gift-outline" />
                 <View style={{ padding: space.md, gap: 4 }}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
                     <Heading size={21} style={{ flex: 1 }}>
@@ -75,7 +82,8 @@ export default function ShopCategory() {
                 </View>
               </Pressable>
             </FadeIn>
-          ))
+            ),
+          )
         )}
         <Pressable onPress={() => WebBrowser.openBrowserAsync(cat.url)} style={{ alignSelf: 'center', padding: 8, flexDirection: 'row', gap: 6, alignItems: 'center' }}>
           <Ionicons name="open-outline" size={14} color={c.muted} />

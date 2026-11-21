@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { storeInfo, storeProducts } from '../../store.config';
+import { productImage, storeInfo, storeProducts } from '../../store.config';
 import { Banner, Body, Button, Card, EmptyState, FadeIn, FoodImage, GoldDivider, Header, Heading, Row, Screen, Stepper } from '../components/ui';
 import { money } from '../lib/pricing';
 import { useStore } from '../lib/store';
@@ -32,7 +32,7 @@ export default function Bag() {
         {lines.map(({ l, p }, i) => (
           <FadeIn key={l.key} delay={i * 50}>
             <Card style={{ flexDirection: 'row', gap: 12 }}>
-              <FoodImage uri={p!.image} style={{ width: 78, height: 78 }} radiusValue={radius.md} icon="gift-outline" />
+              <FoodImage uri={productImage(p!)} style={{ width: 78, height: 78 }} radiusValue={radius.md} icon="gift-outline" />
               <View style={{ flex: 1, gap: 6 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8 }}>
                   <Heading size={18} style={{ flex: 1 }}>

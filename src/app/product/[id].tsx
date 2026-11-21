@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { storeInfo, storeProducts } from '../../../store.config';
+import { isEventExpired, productImage, storeInfo, storeProducts } from '../../../store.config';
 import { Banner, Body, Button, EmptyState, Eyebrow, FadeIn, Field, FoodImage, GoldDivider, Heading, IconButton, Stepper, Tag } from '../../components/ui';
 import { success } from '../../lib/feedback';
 import { money } from '../../lib/pricing';
@@ -40,11 +40,26 @@ export default function ProductScreen() {
     setAdded(true);
   };
 
+  // Past events show only the Stay Tuned picture: no price, details or buying
+  if (isEventExpired(product)) {
+    return (
+      <View style={{ flex: 1, backgroundColor: c.background }}>
+        <FoodImage uri={productImage(product)} radiusValue={0} style={{ height: 340 }} icon="gift-outline" />
+        <View style={{ position: 'absolute', top: insets.top + 10, left: 16 }}>
+          <IconButton icon="chevron-back" onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))} />
+        </View>
+        <View style={{ paddingHorizontal: space.lg, paddingTop: 20 }}>
+          <Heading size={34}>Stay Tuned</Heading>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: c.background }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: insets.bottom + 140 }}>
         <View>
-          <FoodImage uri={product.image} radiusValue={0} style={{ height: 340 }} icon="gift-outline" />
+          <FoodImage uri={productImage(product)} radiusValue={0} style={{ height: 340 }} icon="gift-outline" />
           <LinearGradient colors={['rgba(0,0,0,0.45)', 'transparent', 'rgba(28,28,30,0.95)']} locations={[0, 0.4, 1]} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
           <View style={{ position: 'absolute', top: insets.top + 10, left: 16 }}>
             <IconButton icon="chevron-back" onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))} />

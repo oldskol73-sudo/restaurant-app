@@ -35,6 +35,8 @@ export type StoreProduct = {
   /** Things the customer types in before adding to the bag */
   fields?: ProductField[];
   stock?: number;
+  /** Events only: when it ends (local time, e.g. '2026-11-15T18:00'). After this the photo becomes the Stay Tuned placeholder. */
+  eventEnd?: string;
   /** Page on the website for completing the purchase */
   url: string;
 };
@@ -119,6 +121,7 @@ export const storeProducts: StoreProduct[] = [
     ],
     fields: [{ id: 'name', label: 'Name', placeholder: 'Name for the ticket', required: true }],
     stock: 4,
+    eventEnd: '2026-11-15T18:00',
     url: 'https://iuicdc.company.site/products/wine-tasting-event',
   },
   {
@@ -140,6 +143,16 @@ export const storeProducts: StoreProduct[] = [
     url: 'https://iuicdc.company.site/products/feast-day-alms',
   },
 ];
+
+/** Shown in place of an event's photo once the event has passed */
+const stayTuned = require('./assets/Stay-Tuned.jpg');
+
+/** True when a product is an event whose end time has passed */
+export const isEventExpired = (p: StoreProduct, now: Date = new Date()) =>
+  !!p.eventEnd && new Date(p.eventEnd).getTime() < now.getTime();
+
+/** The photo to show for a product; expired events get the Stay Tuned placeholder */
+export const productImage = (p: StoreProduct) => (isEventExpired(p) ? stayTuned : p.image);
 
 /** Products pinned on the front page */
 export const featuredProductIds = ['wine-tasting-event'];
