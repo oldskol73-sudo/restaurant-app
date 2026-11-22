@@ -1,0 +1,45 @@
+TWO LIVE APP WALKTHROUGHS — PRODUCTION NOTES
+Prepared 20 November 2026
+
+DELIVERABLE STATUS
+Two source-reviewed recording scripts with draft spoken transcripts are included:
+- USER-WALKTHROUGH.txt
+- STAFF-WALKTHROUGH.txt
+No MP4 footage, voiceover, or synchronized caption files have been produced.
+The timestamps in the scripts are target chapter windows, not measured caption timing.
+
+RECOMMENDED ALTERNATIVE IF AUTOMATED RECORDING IS UNAVAILABLE
+Record the actual app on an iPhone using its built-in Screen Recording control, including real taps, opening screens and scrolling. Record User and Staff as two separate takes. This meets the requested format without turning screenshots into a slideshow.
+1. Open the app on the iPhone and prepare a separate test customer/staff environment.
+2. Open Control Center, hold Screen Recording, turn Microphone on if narrating live, then start.
+3. Return to the app and follow the matching action/narration script.
+4. Stop using the recording indicator. Save each take in Photos.
+5. Trim setup, credential entry, dead time and retakes in your video editor. Keep actual navigation visible.
+6. Export User-Walkthrough.mp4 and Staff-Walkthrough.mp4.
+7. Match the draft transcript to the words actually spoken. Create .srt captions from that final edit, check timestamps and names, and retain a separate plain-text transcript.
+
+For cleaner narration, record app footage first and read the script as a separate voiceover, then trim pauses to match the actions. Do not rush scrolling to fit an arbitrary duration. Aim for 5–6 minutes for User and 6–7 minutes for Staff if every capability needs visible coverage.
+Use portrait footage for readable phone UI. Keep tap-to-open and scroll movement; use simple cuts between branches. Avoid digital panning over still captures.
+
+TEST SETUP
+Use a separate demo database or an explicitly prepared test environment for ordering, editing menu/settings, cash handover and deletion. In-app “Send a test order” does not by itself prove cross-device synchronization. Do not reset a working production app for a recording.
+Have a customer device and staff device ready with the same test order. Record the two perspectives separately and include the matching order number in both. Keep an eligible test reward available for the reward redemption branch.
+Never send a test SMS to a real customer. Show the composer with a controlled number and cancel if delivery is unnecessary.
+Do not complete real store purchases. Show the website handoff and return.
+Hide credentials and PIN taps in the edit; the current login screen may display a default PIN hint.
+
+ACCURACY CHECKS BEFORE FINAL RECORDING
+Current code takes precedence over older design notes.
+- Store purchases complete on external product website pages; food cart is separate.
+- PayPal checkout is a demo and does not move money.
+- SMS opens a prepared message for staff to send; automatic SMS is not implemented.
+- Show push delivery only if tested successfully on the actual recording device.
+- Customer “sign in” is a locally saved profile, not demonstrated cloud authentication.
+- Backend connectivity needs an authorized staff account; local-only mode must be labeled.
+- Sales sums recorded orders, including unpaid/simulated entries. Do not call it collected revenue.
+- Device photo selection does not establish shared image upload.
+- Store products/sections are configured separately from the cafe Menu Manager.
+- Missing/expired event listings should be shown honestly as empty or Stay Tuned.
+
+FINAL REVIEW
+Watch each exported video all the way through. Check text legibility, audio volume, absence of private information, every listed feature shown by a real action, no false payment/notification claims, and transcript accuracy. Generate captions only after picture and narration are final.

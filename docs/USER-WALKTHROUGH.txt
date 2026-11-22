@@ -1,0 +1,45 @@
+USER WALKTHROUGH — RECORDING SCRIPT AND DRAFT TRANSCRIPT
+Target: approximately 5 minutes. Timing is a guide, not synchronized captions.
+Status: source-reviewed production script; no video recorded yet.
+
+00:00–00:25 — Welcome and store
+ACTION: Start on the store home page. Scroll slowly through all six section tiles and Featured.
+NARRATION: “Welcome to the iuic.dc app. From one home page you can explore Alms, Sweet Savor Cafe, Local School Events, the DC School Store, Traveling Prophets Support, and Fundraisers. Let’s see how shopping and pickup ordering work.”
+
+00:25–01:10 — Sections, products, and shopping bag
+ACTION: Open each non-cafe section briefly, scrolling its contents. Open a currently available product with fields if present. Show description, price or price note, stock if shown, quantity and required fields. Add to Bag. Open bag; change quantity and remove a second item if available. Open one Complete button, then return.
+NARRATION: “Open a section to see its available items and information. Product pages show the details, pricing, and any information needed before adding an item to your bag. You can adjust quantities and remove items in the bag. Complete opens that product’s website page to finish the purchase. The store bag does not submit one combined paid order inside the app. Some amounts are set on the website. Event availability changes over time, and an ended event may show Stay Tuned.”
+NOTE: Do not invent an available event; show the current state. Demonstrate website handoff without paying.
+
+01:10–01:40 — Cafe welcome and browsing
+ACTION: Return home → Sweet Savor Cafe / Kitchen. Scroll welcome, hours and location. Start Order. Search a real dish name; clear search; tap category chips; scroll menu.
+NARRATION: “Sweet Savor Cafe is the pickup food ordering area. The welcome page shows the cafe information and opening hours. Tap Start Order to browse the menu. Search for a dish or filter by category. The menu shows prices, available sale labels and badges. Sold-out items and paused ordering are clearly marked.”
+
+01:40–02:30 — Customize a meal
+ACTION: Open a meal with options and pairings. Show description; favorite it using a demo customer profile if needed. Select required options, one side and extra; scroll all Complete the Plate content. Add a kitchen note; change quantity; add to order.
+NARRATION: “Open a dish for its description and full price. Choose the available options, then use Complete the Plate to add suggested sides, drinks, sauces, or extras. Some selections have their own options and added prices. Add a note for the kitchen, choose the quantity, and add the meal to your order. You can also save favorite dishes for later.”
+
+02:30–03:05 — Cart
+ACTION: Open cart. Change quantity; edit a kitchen note; remove an extra temporary line. Scroll recommendations and totals. Continue to Checkout.
+NARRATION: “Your food cart is separate from the store shopping bag. Here you can review choices and notes, adjust quantities, remove items, and add suggested items. Subtotal, tax, and total are shown before checkout.”
+
+03:05–03:50 — Checkout
+ACTION: Show guest checkout fields and payment/notification choices. Open PayPal demo sheet then cancel it. Choose cash and App alert. Apply reward only if an eligible demo profile has one. Submit ONLY in an isolated demo environment or approved test backend.
+NARRATION: “Checkout supports a guest order with a name and mobile number. Choose cash at pickup or view the PayPal preview. PayPal is currently a demonstration: no real money moves. Choose an app alert, a text message, or both. Texting currently needs a staff member to send the prepared message; it is not automated. An available reward can be applied here, and the total updates before you place the order. This walkthrough uses a test cash order.”
+
+03:50–04:20 — Tracking and pickup
+ACTION: Show actual test order number, item summary, totals, cash tag and status. Have staff advance that same order in the second recording setup. Show received → preparing → ready → completed. Capture actual app alert; only show lock-screen push if it works on the tested device.
+NARRATION: “After placing the order, keep its order number and follow its progress from received to preparing and ready for pickup. Review the items, amount due, and pickup details here. When staff marks it ready, the app can show the pickup alert. Device push alerts depend on the device setup and notification permission. For cash orders, pay at the counter when collecting your meal.”
+
+04:20–05:00 — Account and rewards
+ACTION: Open Account; show demo profile creation/edit fields, favorites, past order, Track and Order again. Open Rewards; scroll points, punch card and available rewards. End on store home.
+NARRATION: “The customer profile stores your name, phone number, and optional email on this device. Account brings together favorites and past orders, with tracking for an unfinished order and Order again to refill the cart with available items. Rewards shows points, punch-card progress, and available rewards when the program is enabled. Check the displayed reward rules, then apply an eligible reward at checkout. That covers shopping, pickup ordering, tracking, and returning for your next visit.”
+
+COVERAGE / PICKUP SHOTS
+- Open every store section, including empty or Stay Tuned states.
+- Show one validation message for missing required product fields or meal options, then correct it.
+- Show sold-out and paused states in the isolated demo if present; staff video demonstrates their controls.
+- Show guest path and profile path; profile is not demonstrated as a cloud password account.
+- Show reward redemption only with real eligible test data.
+- Do not claim store bag field values are automatically transferred to website checkout.
+- Record sign-out at the end if needed; no real personal details.

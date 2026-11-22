@@ -1,0 +1,42 @@
+STAFF / BACKEND WALKTHROUGH — RECORDING SCRIPT AND DRAFT TRANSCRIPT
+Target: approximately 6 minutes. Timing is a guide, not synchronized captions.
+Status: source-reviewed production script; no video recorded yet.
+
+00:00–00:40 — Access and connection
+ACTION: Home → Staff. Show PIN screen but cut out entry and any displayed default code. Show staff database connection page with demo credentials obscured. Open Orders. Show connection state in Settings.
+NARRATION: “This is the staff side of Sweet Savor Cafe. Staff access uses a quick PIN unlock. Shared operations also require an authorized staff database account on the device; the PIN alone does not grant database access. Check that the shared database is connected before relying on orders and menu updates across phones. A local preview must be identified as a demo.”
+
+00:40–01:25 — Incoming orders
+ACTION: In a test environment, place the customer video’s cash order from a second device. Capture arrival and chime if heard. Open/scroll its card. Show Active, Ready, Done today filters.
+NARRATION: “Orders are organized into Active, Ready, and Done today. Each card shows the order number, customer details, meal quantities, options, extras, notes, total, and payment status. Unpaid cash orders stand out so staff knows money is still due. New incoming orders can trigger a chime. This is the same test order placed in the customer walkthrough.”
+NOTE: If using Send a test order instead, say: “This order was created with the local test-order button.” Do not claim it proves cross-device sync.
+
+01:25–02:15 — Prepare, notify, and hand over
+ACTION: Start preparing → Ready · notify customer. Show customer ready state separately. Demonstrate prepared SMS composer using a controlled test number, then cancel without sending unless explicitly approved. Return to Ready; show Send alert again. Collect test cash & hand over; open Done today. Briefly show a demo paid PayPal card if available.
+NARRATION: “Tap Start preparing as work begins. When the food is ready, Ready notify customer updates the status. App alerts are supported, with push delivery depending on device configuration and permission. For a text request, the staff phone opens a prepared message that a person must send. Send alert again repeats the notification step. For an unpaid cash order, collect the displayed amount and hand over the meal. Paid orders use Picked up. The finished order then appears in Done today. PayPal-labeled preview orders are simulated, not proof of a settled payment.”
+
+02:15–03:30 — Menu management
+ACTION: Menu Manager → available/sold-out toggle on a disposable demo item. Show customer sold-out state, then restore. Open item editor; scroll name, description, photo URL / photo picker, price, old price, sale tag, badge, category, option groups, pairings. Save one demo edit and verify customer view. Open Add meal and Add extra forms. Demonstrate delete confirmation only on disposable demo item; cancel on real items.
+NARRATION: “Menu Manager controls meals and extras. Use the availability switch when an item sells out, then restore it when it returns. Open an item to edit its name, description, photo, price, category, sale presentation, and badge. Assign the available option groups and choose which meals, sides, drinks, sauces, and extras appear under Complete the Plate. Add meal and Add extra create new entries. Save changes to publish them through the connected backend. Delete requires confirmation. A selected photo on one phone is not proof that an uploaded image is shared to every device; use a tested public image address for this demonstration.”
+NOTE: Show configured option-group selection, not an option-group creation feature.
+
+03:30–04:50 — Settings
+ACTION: Open Settings. Scroll every section: ordering pause, database status, name/logo, colors, address/phone, hours, tax, rewards, PIN codes, demo reset. In isolated demo, toggle pause, show customer browse/disabled checkout, then resume. Preview one color change and restore. Show reset confirmation then Cancel.
+NARRATION: “Settings controls the cafe’s operation and appearance. Pause online ordering when needed: customers can still browse while ordering is paused. Check the shared database connection here. Update the cafe name, tagline, logo, colors, address, phone number, and each day’s pickup hours. Set the tax rate and configure whether rewards are enabled, how many orders earn a reward, points per dollar, and the reward name. The current reward discounts the cheapest side on an eligible order. Staff PIN and Sales passcode are managed here and stay on the device. Settings changes can take effect as you edit. Reset to defaults is a demo housekeeping tool that clears and restores data; we are showing its confirmation and cancelling.”
+NOTE: Store categories, products and website payments are not managed by these cafe screens. They are configured separately; no store admin dashboard is demonstrated.
+
+04:50–05:40 — Sales
+ACTION: Sales tab → cut passcode entry. Show Today and This week; scroll total sales, order count, average, chart, PayPal/cash breakdown, best-selling meals and add-ons. Leave and re-enter to show re-lock.
+NARRATION: “Sales has a separate passcode and locks again when you leave. Switch between Today and This week to see recorded order totals including tax, order count, average order value, sales by time or day, and the payment-method breakdown. Scroll down for best-selling meals and add-ons, including sides, drinks, desserts, sauces, and extras. These figures summarize recorded orders. They include orders by their creation date and payment choice, so unpaid cash and simulated PayPal can be included. This is not a reconciled accounting or payment settlement report.”
+
+05:40–06:10 — Backend scope and close
+ACTION: Return to connected database status; show the customer’s matching menu/order update if actually verified. Exit staff mode. End on home page.
+NARRATION: “The shared backend connects customer ordering with authorized staff operations. Customers browse menu and settings, submit an order, and track their own order; authorized staff manage the shared menu, settings, and order queue. Local profiles, carts, favorites, and PINs remain device-based. This walkthrough covers the operational backend inside the app. Database administration and store website management are separate tasks. Exit staff mode when finished.”
+
+COVERAGE / PICKUP SHOTS
+- Both cash unpaid → collected and already-paid preview pickup paths.
+- Resend alert, all order filters, incoming chime if observed.
+- Meals and extras: add, edit, availability, save, delete confirmation.
+- All Settings sections and Sales passcode re-lock.
+- Real cross-device evidence required before describing synchronization as verified.
+- No passwords, PIN entry, default-code hints, customer phone numbers, or real sales data in final edit.
